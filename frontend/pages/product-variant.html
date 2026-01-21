@@ -1,0 +1,101 @@
+<template id="tpl-product-variant">
+  <div id="variant-modal"
+       class="d-none position-fixed top-0 start-0 w-100 h-100 overflow-auto bg-warning"
+       style="z-index:9999;">
+
+    <!-- Top bar -->
+    <div class="bg-warning">
+      <div class="container py-3 d-flex align-items-center justify-content-between">
+        <button class="btn btn-link text-dark fw-semibold text-decoration-none"
+                type="button"
+                onclick="Kiosk.variant.close()">
+          ✕ Discard
+        </button>
+
+        <div class="fw-bold fs-4 text-dark" id="pv-title">Product</div>
+
+        <div style="width:90px;"></div>
+      </div>
+
+      <div class="container pb-3">
+        <div class="text-center text-dark fw-semibold">
+          Base: $ <span id="pv-base-price">0.00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="bg-light" style="min-height: calc(100vh - 140px);">
+      <div class="container py-4">
+
+        <div class="row g-4 align-items-start">
+
+          <!-- Image card -->
+          <div class="col-12 col-md-5">
+            <div class="bg-white border rounded-4 p-3 shadow-sm">
+              <div class="bg-light rounded-4 d-flex justify-content-center align-items-center"
+                   style="height:320px;">
+                <img id="pv-image" src="" alt="Product"
+                     style="max-height:100%; max-width:100%; object-fit:contain;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Options card -->
+          <div class="col-12 col-md-7">
+            <div class="bg-white border rounded-4 p-3 shadow-sm">
+              <div class="fw-bold fs-5 mb-2">Customize</div>
+              <div class="text-muted small mb-3">Choose required options before adding.</div>
+
+              <!-- JS renders options here -->
+              <div id="pv-options"></div>
+
+              <!-- Error -->
+              <div id="pv-error" class="text-danger fw-semibold mt-3 d-none">
+                Please complete required selections.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom sticky bar -->
+    <div class="bg-white border-top position-sticky bottom-0">
+      <div class="container py-3">
+        <div class="row align-items-center g-3">
+
+          <!-- Qty -->
+          <div class="col-6">
+            <div class="btn-group w-100" role="group" aria-label="Quantity">
+              <button class="btn btn-light border py-3 fs-4" type="button" onclick="Kiosk.variant.dec()">−</button>
+              <button class="btn btn-white border py-3 fw-bold" type="button" id="pv-qty">1</button>
+              <button class="btn btn-light border py-3 fs-4" type="button" onclick="Kiosk.variant.inc()">+</button>
+            </div>
+          </div>
+
+          <!-- Total -->
+          <div class="col-3 text-center">
+            <div class="text-muted fw-semibold">Total</div>
+            <div class="fw-bold text-warning fs-4">
+              $ <span id="pv-total">0.00</span>
+            </div>
+          </div>
+
+          <!-- Add -->
+          <div class="col-3">
+            <button class="btn btn-warning w-100 py-3 fw-bold"
+                    type="button"
+                    onclick="Kiosk.variant.addToCart()">
+              Add
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</template>

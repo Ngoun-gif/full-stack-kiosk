@@ -1,0 +1,68 @@
+<template id="tpl-payment-method">
+  <div id="payment-method" class="screen">
+    <div class="container">
+
+      <h2>Select Payment Method</h2>
+      <p>Choose how you would like to pay for your order</p>
+
+      <!-- PAYMENT OPTIONS -->
+      <div class="payment-options">
+
+        <!-- COUNTER -->
+        <div class="payment-option selected"
+             id="payCounterOption"
+             onclick="Kiosk.paymentMethod.select('counter')">
+
+          <div class="payment-icon">
+            <img src="./assets/payment-method/counter_payment.png" alt="Pay at Counter">
+          </div>
+
+          <div class="payment-title">Pay at Counter</div>
+          <div class="payment-desc">
+            Pay with cash or card at the counter
+          </div>
+        </div>
+
+        <!-- QR -->
+        <div class="payment-option"
+             id="payQRCodeOption"
+             onclick="Kiosk.paymentMethod.select('qrcode')">
+
+          <div class="payment-icon">
+            <img src="./assets/payment-method/qr_payment.png" alt="Scan QR Code">
+          </div>
+
+          <div class="payment-title">Scan QR Code</div>
+          <div class="payment-desc">
+            Pay now with ABA and other banks using Bakong
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TOTAL (optional but useful) -->
+      <div style="margin-top:28px;">
+        <div style="font-size:1.4rem; color:#6b7280;">Order Total</div>
+        <div style="font-size:2.6rem; font-weight:900; color:#f59e0b;">
+          $ <span id="pm-total">0.00</span>
+        </div>
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div style="margin-top:32px; display:flex; flex-direction:column; gap:20px;">
+        <button class="btn btn-success"
+                style="font-size:1.7rem; padding:24px;"
+                onclick="Kiosk.paymentMethod.continue()">
+          Continue with Selected Method
+        </button>
+
+        <button class="btn"
+                style="background:#9ca3af; color:white; font-size:1.4rem;"
+                onclick="Kiosk.router.go('menu')">
+          Back to Menu
+        </button>
+      </div>
+
+    </div>
+  </div>
+</template>

@@ -6,7 +6,7 @@ console.log("router.js loaded");
 Kiosk.router = {
   start() {
     console.log("router.start()");
-    this.go("splash");
+    this.go("splash"); // or "menu" for testing
   },
   go(name) {
     console.log("router.go()", name);

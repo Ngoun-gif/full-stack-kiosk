@@ -1,0 +1,31 @@
+.qr-container{
+  display:flex;
+  justify-content:center;
+  margin: 10px 0 20px;
+}
+.qr-img{
+  width: 320px;
+  height: 320px;
+  object-fit: contain;
+  border-radius: 18px;
+  background: #fff;
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+.bank-switch{
+  display:flex;
+  justify-content:center;
+  gap: 12px;
+  margin-top: 10px;
+}
+.bank-btn{
+  border: 2px solid #e5e7eb;
+  background: #fff;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+.bank-btn.selected{
+  border-color: var(--primary);
+  background: #fff7cc; /* yellow feel */
+}

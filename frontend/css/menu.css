@@ -1,0 +1,149 @@
+/* ===============================
+   MENU PAGE LAYOUT
+================================ */
+
+.menu-page {
+  height: 100vh;
+  width: 100%;
+  background: #f8f9fa;
+  overflow: hidden;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* ===============================
+   CATEGORY HEADER
+================================ */
+
+#slot-category {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #ffffff;
+}
+
+#slot-category .btn {
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ===============================
+   SUB-CATEGORY HEADER
+================================ */
+
+#slot-sub-category {
+  position: sticky;
+  top: 56px; /* below category header */
+  z-index: 9;
+  background: #f8f9fa;
+}
+
+#slot-sub-category .btn {
+  border-radius: 999px;
+  padding: 6px 14px;
+  white-space: nowrap;
+}
+
+/* ===============================
+   PRODUCT AREA
+================================ */
+
+#slot-product {
+  background: #f8f9fa;
+}
+
+/* Product cards */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  cursor: pointer;
+}
+
+.card:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
+
+/* ===============================
+   CHECKOUT FOOTER
+================================ */
+
+#slot-checkout {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  background: #ffffff;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+}
+
+#slot-checkout button {
+  border-radius: 14px;
+  font-size: 1.1rem;
+  padding: 12px 24px;
+}
+
+/* ===============================
+   VARIANT MODAL (BOTTOM SHEET)
+================================ */
+
+.variant-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+
+.variant-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.variant-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  max-height: 75vh;
+  overflow-y: auto;
+  animation: slideUp 0.25s ease-out;
+}
+
+/* ===============================
+   ANIMATIONS
+================================ */
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ===============================
+   TOUCH FRIENDLY TUNING
+================================ */
+
+button {
+  touch-action: manipulation;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

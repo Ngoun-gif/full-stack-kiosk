@@ -1,0 +1,122 @@
+/* ===============================
+   PAYMENT METHOD (SELECTION) SCREEN
+   =============================== */
+
+#payment-method.screen {
+  height: 100vh;
+  width: 100vw;
+  background: #fffef0; /* same as product-variant background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#payment-method .container {
+  width: 100%;
+  max-width: 1000px;
+  height: 100%;
+  padding: 50px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#payment-method h2 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+#payment-method p {
+  font-size: 1.5rem;
+  color: #6b7280; /* gray-500 */
+  margin-bottom: 40px;
+}
+
+/* PAYMENT METHOD TILES */
+#payment-method .payment-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px;
+  margin: 0 auto;
+  max-width: 1000px;
+}
+
+#payment-method .payment-option {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 50px;
+  text-align: center;
+  cursor: pointer;
+  border: 3px solid transparent;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  transition: transform 0.25s ease,
+              box-shadow 0.25s ease,
+              border-color 0.25s ease,
+              background 0.25s ease;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#payment-method .payment-option:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+}
+
+/* ✅ SELECTED (YELLOW) */
+#payment-method .payment-option.selected {
+  border-color: #f59e0b;         /* warning border */
+  background: #fff7cc;           /* warm yellow bg */
+}
+
+/* ICON */
+#payment-method .payment-icon {
+  margin-bottom: 18px;
+  width: 110px;
+  height: 110px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 22px;
+  background: #f3f4f6;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+/* image inside icon */
+#payment-method .payment-icon img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+}
+
+/* icon when selected */
+#payment-method .payment-option.selected .payment-icon {
+  background: #fde68a;           /* light amber */
+  transform: scale(1.05);
+}
+
+/* TEXT */
+#payment-method .payment-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #1f2937; /* gray-800 */
+}
+
+#payment-method .payment-desc {
+  color: #6b7280;
+  font-size: 1.15rem;
+  line-height: 1.4;
+  max-width: 260px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  #payment-method .payment-options {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+  }
+}

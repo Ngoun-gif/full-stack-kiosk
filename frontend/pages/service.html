@@ -1,14 +1,35 @@
 <template id="tpl-service">
-  <div class="vh-100 d-flex align-items-center justify-content-center">
-    <div class="card p-4 shadow-sm" style="width: min(520px, 92vw); border-radius: 18px;">
-      <h4 class="mb-3 text-center">Select Service</h4>
+  <div class="svc-screen">
+    <button class="btn btn-outline-secondary svc-back" onclick="goSplash()">Splash</button>
 
-      <div class="d-grid gap-3">
-        <button class="btn btn-primary btn-lg py-3" onclick="chooseService('dine_in')">
-          Dine In
-        </button>
-        <button class="btn btn-outline-primary btn-lg py-3" onclick="chooseService('takeaway')">
-          Take Away
+    <div class="svc-container">
+      <h1 class="svc-title">Where do you want to eat?</h1>
+      <p class="svc-subtitle">Choose Options</p>
+
+      <div class="svc-options">
+        <!-- Dine In (selected by default) -->
+        <div id="dineInOption" class="svc-card selected" onclick="selectService('dine_in')">
+          <div class="svc-icon">
+            <img src="./assets/service/dine_in.png" alt="Dine In">
+          </div>
+          <div class="svc-card-title">Dine In</div>
+          <div class="svc-card-desc">Enjoy your meal here</div>
+        </div>
+
+        <!-- Take Away -->
+        <div id="takeAwayOption" class="svc-card" onclick="selectService('takeaway')">
+          <div class="svc-icon">
+            <img src="./assets/service/take_away.png" alt="Take Away">
+          </div>
+          <div class="svc-card-title">Take Away</div>
+          <div class="svc-card-desc">Pack your order to go</div>
+        </div>
+      </div>
+
+      <!-- Optional: show continue button (remove if you don't want) -->
+      <div class="svc-actions">
+        <button class="btn btn-success svc-continue" onclick="continueService()">
+          Continue
         </button>
       </div>
     </div>

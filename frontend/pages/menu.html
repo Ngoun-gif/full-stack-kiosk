@@ -1,12 +1,14 @@
 <template id="tpl-menu">
-  <div class="p-3">
-    <div class="d-flex justify-content-between align-items-center">
-      <h4 class="m-0">Menu</h4>
-      <button class="btn btn-outline-secondary" onclick="goService()">Service</button>
-    </div>
+  <div class="d-flex flex-column vh-100">
+    <div id="slot-category"></div>
+    <div id="slot-sub-category"></div>
 
-    <div id="productGrid" class="text-muted mt-3">
-      No data yet
-    </div>
+    <main class="flex-grow-1 overflow-auto">
+      <div id="slot-product"></div>
+    </main>
+
+    <div id="slot-checkout-footer"></div>
+
+    <div id="slot-variant"></div>
   </div>
 </template>

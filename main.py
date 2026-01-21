@@ -26,6 +26,10 @@ if __name__ == "__main__":
         url=built_path.as_uri(),
         js_api=AppApi(),
         fullscreen=True,
-        confirm_close=False
+        confirm_close=False,
+        width = 1080,
+        height = 1920,
+        resizable=False,
     )
-    webview.start(debug=True, private_mode=False)
+    webview.start(debug=True, private_mode=True)
+

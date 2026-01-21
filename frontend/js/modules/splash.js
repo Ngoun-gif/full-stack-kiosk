@@ -8,6 +8,7 @@ Kiosk.pages.splash = function () {
     Kiosk.router.go("service");
   };
 
+
   const el = document.getElementById("splashCarousel");
   if (el && window.bootstrap && bootstrap.Carousel) {
     const old = bootstrap.Carousel.getInstance(el);

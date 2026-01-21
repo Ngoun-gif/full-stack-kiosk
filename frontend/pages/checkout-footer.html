@@ -1,0 +1,35 @@
+<template id="tpl-checkout-footer">
+  <div class="bg-white border-top py-3">
+    <div class="container">
+      <div class="row align-items-center text-center g-2">
+
+        <div class="col-4">
+          <button class="btn btn-light w-100 py-3 fw-semibold"
+                  type="button"
+                  onclick="Kiosk.router.go('service')">
+            Back
+          </button>
+        </div>
+
+        <div class="col-4">
+          <div class="text-muted fw-semibold">Total</div>
+          <div class="fw-bold text-warning fs-4">
+            $ <span id="cart-total">0.00</span>
+          </div>
+          <div class="small text-muted">
+            Items: <span id="cart-count">0</span>
+          </div>
+        </div>
+
+        <div class="col-4">
+          <button class="btn btn-warning w-100 py-3 fw-semibold"
+                  type="button"
+                  onclick="Kiosk.router.go('checkout')">
+            Checkout
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</template>

@@ -1,17 +1,19 @@
-window.Kiosk = window.Kiosk || {};
-Kiosk.pages = Kiosk.pages || {};
-
 Kiosk.pages.menu = function () {
+  // Render base menu layout
   Kiosk.ui.render("tpl-menu");
 
-  window.goService = () => Kiosk.router.go("service");
+  // Render sections inside menu
+  Kiosk.ui.renderInto("tpl-category", "#slot-category");
+  Kiosk.ui.renderInto("tpl-sub-category", "#slot-sub-category");
+  Kiosk.ui.renderInto("tpl-product", "#slot-product");
+  Kiosk.ui.renderInto("tpl-checkout-footer", "#slot-checkout-footer");
+  Kiosk.ui.renderInto("tpl-product-variant", "#slot-variant");
 
-  const grid = document.getElementById("productGrid");
-  if (grid) {
-    grid.innerHTML = `
-      <div class="text-muted">
-        Menu loaded. Service mode: <b>${Kiosk.state.service || "-"}</b>
-      </div>
-    `;
-  }
+  // Init logic modules
+  Kiosk.category.init();
+  Kiosk.subCategory.init();
+  Kiosk.product.init();
+
+  // IMPORTANT: init cart after footer exists
+  Kiosk.cart.init();
 };

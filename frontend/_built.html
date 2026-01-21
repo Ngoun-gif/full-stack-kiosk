@@ -7,6 +7,13 @@
   <link rel="stylesheet" href="./css/bootstrap.min.css">
   <link rel="stylesheet" href="./css/kiosk.css">
   <link rel="stylesheet" href="./css/splash.css">
+  <link rel="stylesheet" href="./css/service.css">
+  <link rel="stylesheet" href="./css/menu.css">
+  <link rel="stylesheet" href ="./css/payment-method.css">
+  <link rel="stylesheet" href ="./css/qr-code-payment.css">
+
+
+
 </head>
 
 <body class="bg-light">
@@ -20,38 +27,496 @@
 
   <script src="./js/core/state.js"></script>
   <script src="./js/core/ui.js"></script>
+  <script src="./js/core/data.js"></script>
   <script src="./js/core/api.js"></script>
   <script src="./js/core/router.js"></script>
 
   <script src="./js/modules/splash.js"></script>
   <script src="./js/modules/service.js"></script>
-  <script src="./js/modules/menu.js"></script>
+  <script src="js/modules/menu.js"></script>
+  <script src="js/modules/category.js"></script>
+  <script src="js/modules/sub-category.js"></script>
+  <script src="js/modules/product.js"></script>
+  <script src="js/modules/variant.js"></script>
+  <script src="js/modules/checkout.js"></script>
+  <script src="js/modules/cart.js"></script>
+  <script src="js/modules/payment-method.js"></script>
+  <script src ="js/modules/payment.js"></script>
+
+
+
 
   <script src="./app.js"></script>
-<template id="tpl-menu">
-  <div class="p-3">
-    <div class="d-flex justify-content-between align-items-center">
-      <h4 class="m-0">Menu</h4>
-      <button class="btn btn-outline-secondary" onclick="goService()">Service</button>
-    </div>
+<template id="tpl-category">
+  <div class="bg-white border-bottom py-3">
+    <div class="container">
+      <div class="row text-center g-2">
 
-    <div id="productGrid" class="text-muted mt-3">
-      No data yet
+        <div class="col">
+          <button class="btn btn-link text-decoration-none w-100 py-2"
+                  type="button"
+                  data-category-id="drink">
+            <div class="mb-1 cat-icon">
+              <img src="./assets/category/drink.png" alt="Drink" style="height:56px;">
+            </div>
+            <span class="fw-semibold text-dark category-item">Drink</span>
+          </button>
+        </div>
+
+        <div class="col">
+          <button class="btn btn-link text-decoration-none w-100 py-2"
+                  type="button"
+                  data-category-id="food">
+            <div class="mb-1 cat-icon">
+              <img src="./assets/category/food.png" alt="Food" style="height:56px;">
+            </div>
+            <span class="fw-semibold text-dark category-item">Food</span>
+          </button>
+        </div>
+
+        <div class="col">
+          <button class="btn btn-link text-decoration-none w-100 py-2"
+                  type="button"
+                  data-category-id="rtd">
+            <div class="mb-1 cat-icon">
+              <img src="./assets/category/soft-drink.png" alt="RTD" style="height:56px;">
+            </div>
+            <span class="fw-semibold text-dark category-item">Ready-To-Drink</span>
+          </button>
+        </div>
+
+      </div>
     </div>
   </div>
 </template>
 
-<template id="tpl-service">
-  <div class="vh-100 d-flex align-items-center justify-content-center">
-    <div class="card p-4 shadow-sm" style="width: min(520px, 92vw); border-radius: 18px;">
-      <h4 class="mb-3 text-center">Select Service</h4>
+<template id="tpl-checkout-footer">
+  <div class="bg-white border-top py-3">
+    <div class="container">
+      <div class="row align-items-center text-center g-2">
 
-      <div class="d-grid gap-3">
-        <button class="btn btn-primary btn-lg py-3" onclick="chooseService('dine_in')">
-          Dine In
+        <div class="col-4">
+          <button class="btn btn-light w-100 py-3 fw-semibold"
+                  type="button"
+                  onclick="Kiosk.router.go('service')">
+            Back
+          </button>
+        </div>
+
+        <div class="col-4">
+          <div class="text-muted fw-semibold">Total</div>
+          <div class="fw-bold text-warning fs-4">
+            $ <span id="cart-total">0.00</span>
+          </div>
+          <div class="small text-muted">
+            Items: <span id="cart-count">0</span>
+          </div>
+        </div>
+
+        <div class="col-4">
+          <button class="btn btn-warning w-100 py-3 fw-semibold"
+                  type="button"
+                  onclick="Kiosk.router.go('checkout')">
+            Checkout
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="tpl-checkout-page">
+  <div class="d-flex flex-column vh-100" style="background:#fffef0;">
+
+    <!-- Header -->
+    <div class="bg-white border-bottom py-3">
+      <div class="container d-flex align-items-center justify-content-between">
+        <div class="fw-bold fs-4">Your Order</div>
+        <div style="width:80px;"></div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <main class="flex-grow-1 overflow-auto">
+      <div class="container py-3">
+
+        <div id="checkout-empty" class="text-center text-muted py-5 d-none">
+          Your cart is empty.
+        </div>
+
+        <div id="checkout-list" class="d-flex flex-column gap-3"></div>
+
+      </div>
+    </main>
+
+    <!-- Footer Summary -->
+    <div class="bg-white border-top">
+      <div class="container py-3">
+        <div class="row align-items-center g-2">
+
+          <div class="col-4">
+            <button class="btn btn-light w-100 py-3 fw-semibold"
+                    type="button"
+                    onclick="Kiosk.router.go('menu')">
+              Back
+            </button>
+          </div>
+
+          <div class="col-4 text-center">
+            <div class="text-muted fw-semibold">Total</div>
+            <div class="fw-bold text-warning fs-4">
+              $ <span id="co-total">0.00</span>
+            </div>
+            <div class="small text-muted">
+              Items: <span id="co-count">0</span>
+            </div>
+          </div>
+
+          <div class="col-4">
+            <button id="btn-pay" class="btn btn-warning w-100 py-3 fw-bold"
+                    type="button"
+                    onclick="Kiosk.router.go('payment')">
+              Pay
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</template>
+
+<template id="tpl-menu">
+  <div class="d-flex flex-column vh-100">
+    <div id="slot-category"></div>
+    <div id="slot-sub-category"></div>
+
+    <main class="flex-grow-1 overflow-auto">
+      <div id="slot-product"></div>
+    </main>
+
+    <div id="slot-checkout-footer"></div>
+
+    <div id="slot-variant"></div>
+  </div>
+</template>
+
+<template id="tpl-payment-method">
+  <div id="payment-method" class="screen">
+    <div class="container">
+
+      <h2>Select Payment Method</h2>
+      <p>Choose how you would like to pay for your order</p>
+
+      <!-- PAYMENT OPTIONS -->
+      <div class="payment-options">
+
+        <!-- COUNTER -->
+        <div class="payment-option selected"
+             id="payCounterOption"
+             onclick="Kiosk.paymentMethod.select('counter')">
+
+          <div class="payment-icon">
+            <img src="./assets/payment-method/counter_payment.png" alt="Pay at Counter">
+          </div>
+
+          <div class="payment-title">Pay at Counter</div>
+          <div class="payment-desc">
+            Pay with cash or card at the counter
+          </div>
+        </div>
+
+        <!-- QR -->
+        <div class="payment-option"
+             id="payQRCodeOption"
+             onclick="Kiosk.paymentMethod.select('qrcode')">
+
+          <div class="payment-icon">
+            <img src="./assets/payment-method/qr_payment.png" alt="Scan QR Code">
+          </div>
+
+          <div class="payment-title">Scan QR Code</div>
+          <div class="payment-desc">
+            Pay now with ABA and other banks using Bakong
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TOTAL (optional but useful) -->
+      <div style="margin-top:28px;">
+        <div style="font-size:1.4rem; color:#6b7280;">Order Total</div>
+        <div style="font-size:2.6rem; font-weight:900; color:#f59e0b;">
+          $ <span id="pm-total">0.00</span>
+        </div>
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div style="margin-top:32px; display:flex; flex-direction:column; gap:20px;">
+        <button class="btn btn-success"
+                style="font-size:1.7rem; padding:24px;"
+                onclick="Kiosk.paymentMethod.continue()">
+          Continue with Selected Method
         </button>
-        <button class="btn btn-outline-primary btn-lg py-3" onclick="chooseService('takeaway')">
-          Take Away
+
+        <button class="btn"
+                style="background:#9ca3af; color:white; font-size:1.4rem;"
+                onclick="Kiosk.router.go('menu')">
+          Back to Menu
+        </button>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+<template id="tpl-payment-qr">
+  <div id="payment" class="screen">
+    <div class="container text-center py-4">
+
+      <h2 class="fw-bold mb-2">Scan to Pay</h2>
+      <p class="text-muted fs-5 mb-4">
+        Scan the QR code below with your banking app to complete the payment.
+      </p>
+
+      <!-- ABA QR POSTER -->
+      <div class="qr-poster mx-auto mb-4">
+        <img id="qrImage"
+             src="./assets/payment/aba_khim.png"
+             alt="ABA Pay QR"
+             class="qr-img-big">
+      </div>
+
+      <!-- BANK -->
+      <div class="bank-switch mb-4">
+        <button class="bank-btn selected"
+                id="bankABA"
+                onclick="Kiosk.payment.setQrBank('aba')">
+          ABA
+        </button>
+      </div>
+
+      <!-- TOTAL -->
+      <div class="total-box mx-auto mb-4">
+        <div class="text-muted fs-5">Order Total</div>
+        <div class="total-amount">
+          $ <span id="payAmount">0.00</span>
+        </div>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="d-flex gap-3 justify-content-center flex-wrap">
+        <button class="btn btn-secondary px-4 py-3 fw-semibold"
+                onclick="Kiosk.router.go('payment_method')">
+          Change Payment Method
+        </button>
+
+        <button class="btn btn-warning px-5 py-3 fw-bold fs-5"
+                onclick="Kiosk.payment.completeQr()">
+          Payment Complete
+        </button>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+
+
+
+<template id="tpl-pay-counter">
+  <div id="pay-counter" class="screen">
+    <div class="container" style="text-align:center;">
+
+      <h2>Pay at Counter</h2>
+      <p>Please proceed to the counter to pay when picking up your order.</p>
+
+      <div class="payment-option selected" style="max-width:700px; margin:0 auto; cursor:default;">
+        <div style="font-size:4.5rem; margin-bottom:14px;">💵</div>
+        <div class="payment-title" style="font-size:2rem;">Order Confirmed!</div>
+        <div class="payment-desc" style="max-width:none;">
+          Show your receipt at the counter and complete payment.
+        </div>
+
+        <div style="margin-top:22px; width:100%; background:#ffffff; border-radius:16px; padding:20px; border:2px solid #e5e7eb;">
+          <div style="font-size:1.3rem; color:#6b7280; margin-bottom:6px;">Amount Due</div>
+          <div style="font-size:3rem; font-weight:900; color:#f59e0b;">
+            $ <span id="counterAmount">0.00</span>
+          </div>
+        </div>
+
+        <div style="margin-top:18px; width:100%; background:#fff7cc; border-radius:14px; padding:16px; border:2px solid #fde68a; text-align:left;">
+          <div style="font-weight:800; margin-bottom:8px;">Payment Options at Counter:</div>
+          <div>• Cash (USD/Riel)</div>
+          <div>• Credit/Debit Card</div>
+          <div>• ABA Bank Transfer</div>
+        </div>
+      </div>
+
+      <div style="margin-top:32px; display:flex; flex-direction:column; gap:20px; max-width:700px; margin-left:auto; margin-right:auto;">
+        <button class="btn btn-success"
+                style="font-size:1.7rem; padding:22px;"
+                onclick="Kiosk.payment.printCounterReceipt()">
+          Print Receipt
+        </button>
+
+        <button class="btn btn-primary"
+                style="font-size:1.5rem; padding:18px;"
+                onclick="Kiosk.router.go('payment_method')">
+          ← Change Payment Method
+        </button>
+
+        <button class="btn btn-warning"
+                style="font-size:1.7rem; padding:22px;"
+                onclick="Kiosk.payment.finishAndClear()">
+          Done
+        </button>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+<template id="tpl-product-variant">
+  <div id="variant-modal"
+       class="d-none position-fixed top-0 start-0 w-100 h-100 overflow-auto bg-warning"
+       style="z-index:9999;">
+
+    <!-- Top bar -->
+    <div class="bg-warning">
+      <div class="container py-3 d-flex align-items-center justify-content-between">
+        <button class="btn btn-link text-dark fw-semibold text-decoration-none"
+                type="button"
+                onclick="Kiosk.variant.close()">
+          ✕ Discard
+        </button>
+
+        <div class="fw-bold fs-4 text-dark" id="pv-title">Product</div>
+
+        <div style="width:90px;"></div>
+      </div>
+
+      <div class="container pb-3">
+        <div class="text-center text-dark fw-semibold">
+          Base: $ <span id="pv-base-price">0.00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="bg-light" style="min-height: calc(100vh - 140px);">
+      <div class="container py-4">
+
+        <div class="row g-4 align-items-start">
+
+          <!-- Image card -->
+          <div class="col-12 col-md-5">
+            <div class="bg-white border rounded-4 p-3 shadow-sm">
+              <div class="bg-light rounded-4 d-flex justify-content-center align-items-center"
+                   style="height:320px;">
+                <img id="pv-image" src="" alt="Product"
+                     style="max-height:100%; max-width:100%; object-fit:contain;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Options card -->
+          <div class="col-12 col-md-7">
+            <div class="bg-white border rounded-4 p-3 shadow-sm">
+              <div class="fw-bold fs-5 mb-2">Customize</div>
+              <div class="text-muted small mb-3">Choose required options before adding.</div>
+
+              <!-- JS renders options here -->
+              <div id="pv-options"></div>
+
+              <!-- Error -->
+              <div id="pv-error" class="text-danger fw-semibold mt-3 d-none">
+                Please complete required selections.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom sticky bar -->
+    <div class="bg-white border-top position-sticky bottom-0">
+      <div class="container py-3">
+        <div class="row align-items-center g-3">
+
+          <!-- Qty -->
+          <div class="col-6">
+            <div class="btn-group w-100" role="group" aria-label="Quantity">
+              <button class="btn btn-light border py-3 fs-4" type="button" onclick="Kiosk.variant.dec()">−</button>
+              <button class="btn btn-white border py-3 fw-bold" type="button" id="pv-qty">1</button>
+              <button class="btn btn-light border py-3 fs-4" type="button" onclick="Kiosk.variant.inc()">+</button>
+            </div>
+          </div>
+
+          <!-- Total -->
+          <div class="col-3 text-center">
+            <div class="text-muted fw-semibold">Total</div>
+            <div class="fw-bold text-warning fs-4">
+              $ <span id="pv-total">0.00</span>
+            </div>
+          </div>
+
+          <!-- Add -->
+          <div class="col-3">
+            <button class="btn btn-warning w-100 py-3 fw-bold"
+                    type="button"
+                    onclick="Kiosk.variant.addToCart()">
+              Add
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</template>
+
+<template id="tpl-product">
+  <div id="product-items"></div>
+</template>
+
+<template id="tpl-service">
+  <div class="svc-screen">
+    <button class="btn btn-outline-secondary svc-back" onclick="goSplash()">Splash</button>
+
+    <div class="svc-container">
+      <h1 class="svc-title">Where do you want to eat?</h1>
+      <p class="svc-subtitle">Choose Options</p>
+
+      <div class="svc-options">
+        <!-- Dine In (selected by default) -->
+        <div id="dineInOption" class="svc-card selected" onclick="selectService('dine_in')">
+          <div class="svc-icon">
+            <img src="./assets/service/dine_in.png" alt="Dine In">
+          </div>
+          <div class="svc-card-title">Dine In</div>
+          <div class="svc-card-desc">Enjoy your meal here</div>
+        </div>
+
+        <!-- Take Away -->
+        <div id="takeAwayOption" class="svc-card" onclick="selectService('takeaway')">
+          <div class="svc-icon">
+            <img src="./assets/service/take_away.png" alt="Take Away">
+          </div>
+          <div class="svc-card-title">Take Away</div>
+          <div class="svc-card-desc">Pack your order to go</div>
+        </div>
+      </div>
+
+      <!-- Optional: show continue button (remove if you don't want) -->
+      <div class="svc-actions">
+        <button class="btn btn-success svc-continue" onclick="continueService()">
+          Continue
         </button>
       </div>
     </div>
@@ -93,13 +558,23 @@
       </div>
     </div>
 
-    <div class="splash-bottom">
-      <button class="btn btn-primary btn-lg w-100 py-3 fw-bold" onclick="goServiceFromSplash()">
+    <div class="splash-bottom d-flex justify-content-center align-items-center">
+      <button
+        class="btn btn-primary btn-lg w-50 py-3 fw-bold"
+        onclick="goServiceFromSplash()">
         Order Now
       </button>
-      <div class="text-white-50 small mt-2 text-center">Tap to start</div>
     </div>
 
+
+  </div>
+</template>
+
+<template id="tpl-sub-category">
+  <div class="bg-warning border-bottom py-3">
+    <div class="container">
+      <div id="subcat-items" class="row g-2 justify-content-center align-items-center"></div>
+    </div>
   </div>
 </template>
 
