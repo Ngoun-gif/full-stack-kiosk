@@ -20,7 +20,7 @@
 
   <div id="app"></div>
 
-  <!-- templates injected here by main.py -->
+  <!-- templates injected here by kiosk_main.py -->
 
   <!-- scripts (order matters) -->
   <script src="./js/bootstrap.bundle.min.js"></script>
@@ -47,49 +47,56 @@
 
 
   <script src="./app.js"></script>
+<!-- ===========================
+     TEMPLATE (Category)
+     IMPORTANT: add id="slot-category"
+     =========================== -->
 <template id="tpl-category">
-  <div class="bg-white border-bottom py-3">
-    <div class="container">
-      <div class="row text-center g-2">
+<!-- =========================
+     CATEGORY MODULE (FULL)
+     Yellow active selection (icon + text + bg)
+     ========================= -->
 
-        <div class="col">
-          <button class="btn btn-link text-decoration-none w-100 py-2"
-                  type="button"
-                  data-category-id="drink">
-            <div class="mb-1 cat-icon">
-              <img src="./assets/category/drink.png" alt="Drink" style="height:56px;">
-            </div>
-            <span class="fw-semibold text-dark category-item">Drink</span>
-          </button>
-        </div>
+<!-- Put this in your category template / page -->
+<div class="bg-white border-bottom py-3">
+  <div class="container">
+    <!-- IMPORTANT: id="slot-category" is required for JS -->
+    <div id="slot-category" class="row text-center g-2">
 
-        <div class="col">
-          <button class="btn btn-link text-decoration-none w-100 py-2"
-                  type="button"
-                  data-category-id="food">
-            <div class="mb-1 cat-icon">
-              <img src="./assets/category/food.png" alt="Food" style="height:56px;">
-            </div>
-            <span class="fw-semibold text-dark category-item">Food</span>
-          </button>
-        </div>
-
-        <div class="col">
-          <button class="btn btn-link text-decoration-none w-100 py-2"
-                  type="button"
-                  data-category-id="rtd">
-            <div class="mb-1 cat-icon">
-              <img src="./assets/category/soft-drink.png" alt="RTD" style="height:56px;">
-            </div>
-            <span class="fw-semibold text-dark category-item">Ready-To-Drink</span>
-          </button>
-        </div>
-
+      <div class="col">
+        <button class="btn w-100 py-2 category-btn" type="button" data-category-id="drink">
+          <div class="mb-1 cat-icon">
+            <img src="./assets/category/drink.png" alt="Drink" style="height:56px;">
+          </div>
+          <span class="category-item">Drink</span>
+        </button>
       </div>
+
+      <div class="col">
+        <button class="btn w-100 py-2 category-btn" type="button" data-category-id="food">
+          <div class="mb-1 cat-icon">
+            <img src="./assets/category/food.png" alt="Food" style="height:56px;">
+          </div>
+          <span class="category-item">Food</span>
+        </button>
+      </div>
+
+      <div class="col">
+        <button class="btn w-100 py-2 category-btn" type="button" data-category-id="rtd">
+          <div class="mb-1 cat-icon">
+            <img src="./assets/category/soft-drink.png" alt="RTD" style="height:56px;">
+          </div>
+          <span class="category-item">Ready-To-Drink</span>
+        </button>
+      </div>
+
     </div>
   </div>
-</template>
+</div>
 
+
+
+</template>
 <template id="tpl-checkout-footer">
   <div class="bg-white border-top py-3">
     <div class="container">
@@ -273,8 +280,9 @@
 </template>
 
 <template id="tpl-payment-qr">
+
   <div id="payment" class="screen">
-    <div class="container text-center py-4">
+    <div class="container text-center py-2">
 
       <h2 class="fw-bold mb-2">Scan to Pay</h2>
       <p class="text-muted fs-5 mb-4">
@@ -282,21 +290,14 @@
       </p>
 
       <!-- ABA QR POSTER -->
-      <div class="qr-poster mx-auto mb-4">
-        <img id="qrImage"
+      <div class="qr-poster mx-auto mb-12">
+        <img 
              src="./assets/payment/aba_khim.png"
              alt="ABA Pay QR"
-             class="qr-img-big">
+             >
       </div>
 
       <!-- BANK -->
-      <div class="bank-switch mb-4">
-        <button class="bank-btn selected"
-                id="bankABA"
-                onclick="Kiosk.payment.setQrBank('aba')">
-          ABA
-        </button>
-      </div>
 
       <!-- TOTAL -->
       <div class="total-box mx-auto mb-4">

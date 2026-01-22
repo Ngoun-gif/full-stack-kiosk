@@ -1,42 +1,50 @@
+<!-- ===========================
+     TEMPLATE (Category)
+     IMPORTANT: add id="slot-category"
+     =========================== -->
 <template id="tpl-category">
-  <div class="bg-white border-bottom py-3">
-    <div class="container">
-      <div class="row text-center g-2">
+<!-- =========================
+     CATEGORY MODULE (FULL)
+     Yellow active selection (icon + text + bg)
+     ========================= -->
 
-        <div class="col">
-          <button class="btn btn-link text-decoration-none w-100 py-2"
-                  type="button"
-                  data-category-id="drink">
-            <div class="mb-1 cat-icon">
-              <img src="./assets/category/drink.png" alt="Drink" style="height:56px;">
-            </div>
-            <span class="fw-semibold text-dark category-item">Drink</span>
-          </button>
-        </div>
+<!-- Put this in your category template / page -->
+<div class="bg-white border-bottom py-3">
+  <div class="container">
+    <!-- IMPORTANT: id="slot-category" is required for JS -->
+    <div id="slot-category" class="row text-center g-2">
 
-        <div class="col">
-          <button class="btn btn-link text-decoration-none w-100 py-2"
-                  type="button"
-                  data-category-id="food">
-            <div class="mb-1 cat-icon">
-              <img src="./assets/category/food.png" alt="Food" style="height:56px;">
-            </div>
-            <span class="fw-semibold text-dark category-item">Food</span>
-          </button>
-        </div>
-
-        <div class="col">
-          <button class="btn btn-link text-decoration-none w-100 py-2"
-                  type="button"
-                  data-category-id="rtd">
-            <div class="mb-1 cat-icon">
-              <img src="./assets/category/soft-drink.png" alt="RTD" style="height:56px;">
-            </div>
-            <span class="fw-semibold text-dark category-item">Ready-To-Drink</span>
-          </button>
-        </div>
-
+      <div class="col">
+        <button class="btn w-100 py-2 category-btn" type="button" data-category-id="drink">
+          <div class="mb-1 cat-icon">
+            <img src="./assets/category/drink.png" alt="Drink" style="height:56px;">
+          </div>
+          <span class="category-item">Drink</span>
+        </button>
       </div>
+
+      <div class="col">
+        <button class="btn w-100 py-2 category-btn" type="button" data-category-id="food">
+          <div class="mb-1 cat-icon">
+            <img src="./assets/category/food.png" alt="Food" style="height:56px;">
+          </div>
+          <span class="category-item">Food</span>
+        </button>
+      </div>
+
+      <div class="col">
+        <button class="btn w-100 py-2 category-btn" type="button" data-category-id="rtd">
+          <div class="mb-1 cat-icon">
+            <img src="./assets/category/soft-drink.png" alt="RTD" style="height:56px;">
+          </div>
+          <span class="category-item">Ready-To-Drink</span>
+        </button>
+      </div>
+
     </div>
   </div>
+</div>
+
+
+
 </template>

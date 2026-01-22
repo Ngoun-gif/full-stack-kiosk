@@ -1,3 +1,8 @@
+/* =========================
+   CATEGORY (FULL) - JS
+   Click -> active yellow (icon + text + bg)
+   ========================= */
+
 window.Kiosk = window.Kiosk || {};
 
 Kiosk.categoryUi = {
@@ -11,63 +16,72 @@ Kiosk.categoryUi = {
 
 Kiosk.category = {
   init() {
-    this.render();
+    // responsive icons
     Kiosk.categoryUi.applyResponsive();
-
     if (!this._resizeBound) {
       window.addEventListener("resize", Kiosk.categoryUi.applyResponsive);
       this._resizeBound = true;
     }
 
+    // wrapper
     const slot = document.getElementById("slot-category");
-    if (!slot) return;
+    if (!slot) {
+      console.warn("❌ slot-category not found. Add id='slot-category' around category buttons.");
+      return;
+    }
 
+    // click (event delegation)
     slot.addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-category-id]");
+      const btn = e.target.closest("button[data-category-id]");
       if (!btn) return;
 
       const id = btn.dataset.categoryId;
 
+      // save state (optional)
+      Kiosk.state = Kiosk.state || {};
+      Kiosk.state.catalog = Kiosk.state.catalog || {};
       Kiosk.state.catalog.categoryId = id;
       Kiosk.state.catalog.subCategoryId = null;
 
+      // activate UI
       this.updateActive(id);
 
-      Kiosk.subCategory.render();
-      Kiosk.product.render();
+      // refresh dependents if exist
+      if (Kiosk.subCategory?.render) Kiosk.subCategory.render();
+      if (Kiosk.product?.render) Kiosk.product.render();
+
+      console.log("✅ Active category:", id);
     });
 
-    this.updateActive(Kiosk.state.catalog.categoryId);
-  },
-
-  render() {
-    const container = document.getElementById("category-items");
-    if (!container) return;
-
-    container.innerHTML = Kiosk.data.categories.map(c => `
-      <div class="col">
-        <button class="btn btn-link text-decoration-none w-100 py-2"
-                type="button"
-                data-category-id="${c.id}">
-          <div class="mb-1 cat-icon">
-            <img src="${c.icon}" alt="${c.name}" style="height:56px;">
-          </div>
-          <span class="fw-semibold text-dark category-item">${c.name}</span>
-        </button>
-      </div>
-    `).join("");
+    // initial active (auto select first if none)
+    const current = Kiosk.state?.catalog?.categoryId;
+    if (current) {
+      this.updateActive(current);
+    } else {
+      const firstBtn = slot.querySelector("button[data-category-id]");
+      if (firstBtn) {
+        const id = firstBtn.dataset.categoryId;
+        Kiosk.state = Kiosk.state || {};
+        Kiosk.state.catalog = Kiosk.state.catalog || {};
+        Kiosk.state.catalog.categoryId = id;
+        this.updateActive(id);
+      }
+    }
   },
 
   updateActive(activeId) {
-    document.querySelectorAll("[data-category-id] .category-item").forEach(el => {
-      el.classList.remove("text-warning");
-      el.classList.add("text-dark");
+    // reset only inside slot (safer)
+    const slot = document.getElementById("slot-category");
+    if (!slot) return;
+
+    slot.querySelectorAll("button[data-category-id]").forEach(b => {
+      b.classList.remove("category-active");
     });
 
-    const active = document.querySelector(`[data-category-id="${activeId}"] .category-item`);
-    if (active) {
-      active.classList.remove("text-dark");
-      active.classList.add("text-warning");
-    }
+    const activeBtn = slot.querySelector(`button[data-category-id="${activeId}"]`);
+    if (activeBtn) activeBtn.classList.add("category-active");
   }
 };
+
+/* Call this AFTER the category UI is rendered */
+Kiosk.category.init();

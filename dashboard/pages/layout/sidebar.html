@@ -1,0 +1,40 @@
+<aside class="bg-dark text-white p-3"
+       :class="{'d-none d-lg-block': !router.state.sidebarOpen, 'position-fixed top-0 start-0 vh-100': router.state.sidebarOpen}"
+       style="width:260px; z-index:1050;">
+
+  <div class="fw-bold mb-3">
+    <i class="bi bi-speedometer2 me-2"></i> Admin Menu
+  </div>
+
+  <div class="list-group list-group-flush">
+    <button class="list-group-item list-group-item-action bg-dark text-white border-0"
+            :class="{active: router.state.route==='category'}"
+            @click="router.go('category')">
+      <i class="bi bi-tags me-2"></i> Category
+    </button>
+
+    <button class="list-group-item list-group-item-action bg-dark text-white border-0"
+            :class="{active: router.state.route==='sub_category'}"
+            @click="router.go('sub_category')">
+      <i class="bi bi-diagram-3 me-2"></i> Sub-Category
+    </button>
+
+    <button class="list-group-item list-group-item-action bg-dark text-white border-0"
+            :class="{active: router.state.route==='product'}"
+            @click="router.go('product')">
+      <i class="bi bi-box-seam me-2"></i> Product
+    </button>
+
+    <button class="list-group-item list-group-item-action bg-dark text-white border-0"
+            :class="{active: router.state.route==='variant'}"
+            @click="router.go('variant')">
+      <i class="bi bi-layers me-2"></i> Product Variant
+    </button>
+  </div>
+
+  <div class="d-lg-none mt-3">
+    <button class="btn btn-outline-light w-100" @click="router.toggleSidebar()">
+      Close
+    </button>
+  </div>
+</aside>

@@ -1,6 +1,7 @@
 <template id="tpl-payment-qr">
+
   <div id="payment" class="screen">
-    <div class="container text-center py-4">
+    <div class="container text-center py-2">
 
       <h2 class="fw-bold mb-2">Scan to Pay</h2>
       <p class="text-muted fs-5 mb-4">
@@ -8,21 +9,14 @@
       </p>
 
       <!-- ABA QR POSTER -->
-      <div class="qr-poster mx-auto mb-4">
-        <img id="qrImage"
+      <div class="qr-poster mx-auto mb-12">
+        <img 
              src="./assets/payment/aba_khim.png"
              alt="ABA Pay QR"
-             class="qr-img-big">
+             >
       </div>
 
       <!-- BANK -->
-      <div class="bank-switch mb-4">
-        <button class="bank-btn selected"
-                id="bankABA"
-                onclick="Kiosk.payment.setQrBank('aba')">
-          ABA
-        </button>
-      </div>
 
       <!-- TOTAL -->
       <div class="total-box mx-auto mb-4">

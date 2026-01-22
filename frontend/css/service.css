@@ -26,7 +26,7 @@
   font-size: clamp(36px, 4vw, 54px);
   font-weight: 800;
   letter-spacing: .2px;
-  color: #1f2cff; /* strong blue */
+  color: #1b1b1b; /* strong blue */
 }
 
 .svc-subtitle{
@@ -59,11 +59,13 @@
   box-shadow: 0 16px 36px rgba(0,0,0,0.08);
 }
 
-/* selected like photo: blue border + soft pink background */
-.svc-card.selected{
-  border: 3px solid #1f2cff;
-  background: #fbefef;
-  box-shadow: 0 18px 40px rgba(31,44,255,0.10);
+/* ✅ selected payment method: yellow theme */
+.svc-card.selected {
+  border: 3px solid #f59e0b;
+  /* strong yellow */
+  background: #fff7cc;
+  /* soft yellow */
+  box-shadow: 0 18px 40px rgba(245, 158, 11, 0.25);
 }
 
 .svc-icon{

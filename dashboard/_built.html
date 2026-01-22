@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kiosk Dashboard</title>
+
+  <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./assets/css/bootstrap-icons.css">
+</head>
+
+<body class="bg-light">
+  <div id="adminApp"></div>
+
+  <!-- ✅ Add defer to ALL scripts (order is preserved) -->
+  <script defer src="./assets/js/vue.global.prod.js"></script>
+  <script defer src="./assets/js/bootstrap.bundle.min.js"></script>
+
+  <script defer src="./js/core/api.js"></script>
+  <script defer src="./js/core/router.js"></script>
+
+  <script defer src="./app.js"></script>
+
+<template id="tpl-category">
+
+<div class="container-fluid p-0">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+      <h4 class="mb-0">Category</h4>
+      <div class="text-muted small">Manage categories</div>
+    </div>
+    <button class="btn btn-primary btn-sm">
+      <i class="bi bi-plus-circle me-1"></i> New
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="card-body text-muted">
+      Category table will be here.
+    </div>
+  </div>
+</div>
+
+
+</template>
+
+
+<template id="tpl-layout-footer">
+<footer class="bg-white border-top px-3 py-2 small text-muted d-flex justify-content-between">
+  <span>CA Solutions Cambodia</span>
+  <span>{{ router.state.footerMsg }}</span>
+</footer>
+
+</template>
+
+
+<template id="tpl-layout-header">
+<header class="navbar navbar-expand bg-white border-bottom px-3">
+  <div class="d-flex align-items-center gap-2">
+    <button class="btn btn-outline-secondary btn-sm d-lg-none" @click="router.toggleSidebar()">
+      <i class="bi bi-list"></i>
+    </button>
+
+    <span class="fw-bold">Kiosk Dashboard</span>
+    <span class="badge text-bg-secondary">Offline</span>
+  </div>
+
+  <div class="ms-auto d-flex align-items-center gap-2">
+    <button class="btn btn-outline-secondary btn-sm" @click="refresh">
+      <i class="bi bi-arrow-clockwise me-1"></i> Refresh
+    </button>
+    <button class="btn btn-outline-danger btn-sm" @click="logout">
+      <i class="bi bi-box-arrow-right me-1"></i> Logout
+    </button>
+  </div>
+</header>
+
+</template>
+
+
+<template id="tpl-layout-master">
+<main class="p-3">
+  <component :is="currentView"></component>
+</main>
+
+</template>
+
+
+<template id="tpl-layout-sidebar">
+<aside class="bg-dark text-white p-3"
+       :class="{'d-none d-lg-block': !router.state.sidebarOpen, 'position-fixed top-0 start-0 vh-100': router.state.sidebarOpen}"
+       style="width:260px; z-index:1050;">
+
+  <div class="fw-bold mb-3">
+    <i class="bi bi-speedometer2 me-2"></i> Admin Menu
+  </div>
+
+  <div class="list-group list-group-flush">
+    <button class="list-group-item list-group-item-action bg-dark text-white border-0"
+            :class="{active: router.state.route==='category'}"
+            @click="router.go('category')">
+      <i class="bi bi-tags me-2"></i> Category
+    </button>
+
+    <button class="list-group-item list-group-item-action bg-dark text-white border-0"
+            :class="{active: router.state.route==='sub_category'}"
+            @click="router.go('sub_category')">
+      <i class="bi bi-diagram-3 me-2"></i> Sub-Category
+    </button>
+
+    <button class="list-group-item list-group-item-action bg-dark text-white border-0"
+            :class="{active: router.state.route==='product'}"
+            @click="router.go('product')">
+      <i class="bi bi-box-seam me-2"></i> Product
+    </button>
+
+    <button class="list-group-item list-group-item-action bg-dark text-white border-0"
+            :class="{active: router.state.route==='variant'}"
+            @click="router.go('variant')">
+      <i class="bi bi-layers me-2"></i> Product Variant
+    </button>
+  </div>
+
+  <div class="d-lg-none mt-3">
+    <button class="btn btn-outline-light w-100" @click="router.toggleSidebar()">
+      Close
+    </button>
+  </div>
+</aside>
+
+</template>
+
+
+<template id="tpl-product">
+
+<div class="container-fluid p-0">
+  <h4>Product</h4>
+  <div class="card mt-3">
+    <div class="card-body text-muted">Product table will be here.</div>
+  </div>
+</div>
+
+
+</template>
+
+
+<template id="tpl-sub_category">
+
+<div class="container-fluid p-0">
+  <h4>Sub-Category</h4>
+  <div class="card mt-3">
+    <div class="card-body text-muted">Sub-category table will be here.</div>
+  </div>
+</div>
+
+
+</template>
+
+
+<template id="tpl-variant">
+
+<div class="container-fluid p-0">
+  <h4>Product Variant</h4>
+  <div class="card mt-3">
+    <div class="card-body text-muted">Variant table will be here.</div>
+  </div>
+</div>
+
+
+</template>
+
+</body>
+</html>

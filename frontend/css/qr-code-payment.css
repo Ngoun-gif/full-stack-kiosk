@@ -1,31 +1,64 @@
-.qr-container{
-  display:flex;
-  justify-content:center;
+/* QR container */
+.qr-container {
+  display: flex;
+  justify-content: center;
   margin: 10px 0 20px;
 }
-.qr-img{
-  width: 320px;
-  height: 320px;
+
+/* 🔧 QR size control – change only this value */
+:root {
+  --qr-size: 100px; /* 85% size */
+}
+
+.qr-img {
+  width: var(--qr-size);
+  height: var(--qr-size);
   object-fit: contain;
   border-radius: 18px;
-  background: #fff;
-  padding: 16px;
+  background: #8e0000;
+  padding: 3px;
+  transform: scale(0.65);
+    /* 👈 make it a bit smaller */
   box-shadow: var(--shadow-sm);
 }
-.bank-switch{
-  display:flex;
-  justify-content:center;
+
+/* Bank switch */
+.bank-switch {
+  display: flex;
+  justify-content: center;
   gap: 12px;
-  margin-top: 10px;
+  margin-top: 5px;
 }
-.bank-btn{
+
+.bank-btn {
   border: 2px solid #e5e7eb;
-  background: #fff;
+  background: #ffffff;
   padding: 10px 18px;
   border-radius: 999px;
   font-weight: 700;
+  transition: all 0.15s ease;
 }
-.bank-btn.selected{
+
+.bank-btn.selected {
   border-color: var(--primary);
   background: #fff7cc; /* yellow feel */
+}
+
+.total-box {
+  text-align: center;
+}
+
+.total-box .text-muted {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.total-amount {
+  color: #dd1717;
+  font-size: 3rem;
+  /* BIG number */
+  font-weight: 800;
+  /* very bold */
+  line-height: 1.1;
+  margin-top: 4px;
 }
