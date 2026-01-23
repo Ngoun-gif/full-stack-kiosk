@@ -1,40 +1,79 @@
-<aside class="bg-dark text-white p-3"
-       :class="{'d-none d-lg-block': !router.state.sidebarOpen, 'position-fixed top-0 start-0 vh-100': router.state.sidebarOpen}"
-       style="width:260px; z-index:1050;">
-
-  <div class="fw-bold mb-3">
-    <i class="bi bi-speedometer2 me-2"></i> Admin Menu
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="#" class="brand-link text-center">
+     <img src="./assets/dist/img/ca.png" alt=""
+         style="width:50px; height:50px;">
+  </a>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- User panel -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex justify-content-center">
+      <div class="info text-center">
+        <span class="d-block text-white fw-bold" >CA Solutions</span>
+      </div>
   </div>
 
-  <div class="list-group list-group-flush">
-    <button class="list-group-item list-group-item-action bg-dark text-white border-0"
-            :class="{active: router.state.route==='category'}"
-            @click="router.go('category')">
-      <i class="bi bi-tags me-2"></i> Category
-    </button>
+    <!-- Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column"
+          data-widget="treeview"
+          role="menu"
+          data-accordion="false">
 
-    <button class="list-group-item list-group-item-action bg-dark text-white border-0"
-            :class="{active: router.state.route==='sub_category'}"
-            @click="router.go('sub_category')">
-      <i class="bi bi-diagram-3 me-2"></i> Sub-Category
-    </button>
+        <!-- Dashboard -->
+        <li class="nav-item">
+          <a href="#"
+             class="nav-link"
+             :class="{ active: router.state.route === 'category' }"
+             @click.prevent="router.go('category')">
+            <i class="nav-icon fas fa-tags"></i>
+            <p>Category</p>
+          </a>
+        </li>
 
-    <button class="list-group-item list-group-item-action bg-dark text-white border-0"
-            :class="{active: router.state.route==='product'}"
-            @click="router.go('product')">
-      <i class="bi bi-box-seam me-2"></i> Product
-    </button>
+        <li class="nav-item">
+          <a href="#"
+             class="nav-link"
+             :class="{ active: router.state.route === 'sub_category' }"
+             @click.prevent="router.go('sub_category')">
+            <i class="nav-icon fas fa-sitemap"></i>
+            <p>Sub-Category</p>
+          </a>
+        </li>
 
-    <button class="list-group-item list-group-item-action bg-dark text-white border-0"
-            :class="{active: router.state.route==='variant'}"
-            @click="router.go('variant')">
-      <i class="bi bi-layers me-2"></i> Product Variant
-    </button>
-  </div>
+        <li class="nav-item">
+          <a href="#"
+             class="nav-link"
+             :class="{ active: router.state.route === 'product' }"
+             @click.prevent="router.go('product')">
+            <i class="nav-icon fas fa-box"></i>
+            <p>Product</p>
+          </a>
+        </li>
 
-  <div class="d-lg-none mt-3">
-    <button class="btn btn-outline-light w-100" @click="router.toggleSidebar()">
-      Close
-    </button>
+        <li class="nav-item">
+          <a href="#"
+             class="nav-link"
+             :class="{ active: router.state.route === 'variant' }"
+             @click.prevent="router.go('variant')">
+            <i class="nav-icon fas fa-layer-group"></i>
+            <p>Product Variant</p>
+          </a>
+        </li>
+
+        <!-- Divider -->
+        <li class="nav-header">SYSTEM</li>
+
+        <li class="nav-item">
+          <a href="#"
+             class="nav-link text-danger"
+             @click.prevent="logout">
+            <i class="nav-icon fas fa-sign-out-alt"></i>
+            <p>Logout</p>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
   </div>
 </aside>

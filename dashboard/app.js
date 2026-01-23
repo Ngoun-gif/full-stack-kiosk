@@ -11,31 +11,24 @@ function tpl(id) {
 }
 
 (function bootstrapDashboard() {
+  // layout templates (AdminLTE)
   const headerTpl  = tpl("tpl-layout-header");
   const sidebarTpl = tpl("tpl-layout-sidebar");
   const masterTpl  = tpl("tpl-layout-master");
   const footerTpl  = tpl("tpl-layout-footer");
 
+  // page templates
   const categoryTpl    = tpl("tpl-category");
   const subCategoryTpl = tpl("tpl-sub_category");
   const productTpl     = tpl("tpl-product");
   const variantTpl     = tpl("tpl-variant");
 
+  // ✅ AdminLTE wrapper layout (NOT bootstrap row/col)
   const rootTemplate = `
-    <div class="d-flex flex-column" style="min-height:100vh;">
+    <div class="wrapper">
       ${headerTpl}
-
-      <div class="container-fluid flex-grow-1">
-        <div class="row">
-          <div class="col-12 col-lg-2 p-0">
-            ${sidebarTpl}
-          </div>
-          <div class="col-12 col-lg-10 p-0 bg-light">
-            ${masterTpl}
-          </div>
-        </div>
-      </div>
-
+      ${sidebarTpl}
+      ${masterTpl}
       ${footerTpl}
     </div>
   `;
