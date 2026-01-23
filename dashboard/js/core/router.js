@@ -5,7 +5,7 @@ window.Dashboard = window.Dashboard || {};
 
 Dashboard.router = {
   state: Vue.reactive({
-    route: "category",
+    route: "dashboard",
     sidebarOpen: false,
     footerMsg: "Ready"
   }),

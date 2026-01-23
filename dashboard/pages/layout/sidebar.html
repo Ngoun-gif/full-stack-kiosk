@@ -1,17 +1,23 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
-  <a href="#" class="brand-link text-center">
-     <img src="./assets/dist/img/ca.png" alt=""
-         style="width:50px; height:50px;">
-  </a>
+
   <!-- Sidebar -->
   <div class="sidebar">
     <!-- User panel -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex justify-content-center">
-      <div class="info text-center">
-        <span class="d-block text-white fw-bold" >CA Solutions</span>
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex flex-column align-items-center text-center">
+      <img src="./assets/dist/img/ca.png"
+           alt="CA Solutions"
+           class="img-circle elevation-2"
+           style="width:56px; height:56px; object-fit:cover;">
+
+      <div class="mt-2">
+        <span class="d-block text-white fw-bold" style="letter-spacing:.3px;">
+          CA Solutions
+        </span>
+        <small class="text-muted d-block">Admin Dashboard</small>
       </div>
-  </div>
+    </div>
+
 
     <!-- Menu -->
     <nav class="mt-2">
@@ -21,6 +27,17 @@
           data-accordion="false">
 
         <!-- Dashboard -->
+
+        <li class="nav-item">
+          <a href="#"
+             class="nav-link"
+             :class="{ active: router.state.route === 'dashboard' }"
+             @click.prevent="router.go('dashboard')">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>Dashboard</p>
+          </a>
+        </li>
+
         <li class="nav-item">
           <a href="#"
              class="nav-link"

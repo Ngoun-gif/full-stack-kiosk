@@ -1,9 +1,55 @@
-import sqlite3
+# backend/controllers/sub_category_controller.py
+import base64, re, uuid, sqlite3
+from pathlib import Path
 from backend.repositories.sub_category_repository import SubCategoryRepository
+
 
 class SubCategoryController:
     def __init__(self):
         self.repo = SubCategoryRepository()
+
+        # project_root / dashboard / assets / uploads / sub_categories
+        project_root = Path(__file__).resolve().parents[2]
+        self.upload_dir = project_root / "dashboard" / "assets" / "uploads" / "sub_categories"
+        self.upload_dir.mkdir(parents=True, exist_ok=True)
+
+    def _save_dataurl_image(self, data_url: str) -> str:
+        m = re.match(r"^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$", data_url)
+        if not m:
+            raise ValueError("Invalid image data")
+
+        mime = m.group(1)
+        b64 = m.group(2)
+
+        ext_map = {
+            "image/png": "png",
+            "image/jpeg": "jpg",
+            "image/jpg": "jpg",
+            "image/webp": "webp",
+        }
+        ext = ext_map.get(mime)
+        if not ext:
+            raise ValueError("Unsupported image type (png/jpg/webp only)")
+
+        raw = base64.b64decode(b64)
+        if len(raw) > 2 * 1024 * 1024:
+            raise ValueError("Image too large (max 2MB)")
+
+        filename = f"subcat_{uuid.uuid4().hex}.{ext}"
+        (self.upload_dir / filename).write_bytes(raw)
+
+        return f"assets/uploads/sub_categories/{filename}"
+
+    def _delete_image_if_exists(self, image_path: str):
+        if not image_path:
+            return
+        project_root = Path(__file__).resolve().parents[2]
+        file_path = project_root / "dashboard" / image_path
+        if file_path.exists():
+            try:
+                file_path.unlink()
+            except Exception:
+                pass
 
     def list_by_category(self, category_id: int, include_inactive=True):
         return {"status": "ok", "data": self.repo.list_by_category(int(category_id), bool(include_inactive))}
@@ -21,10 +67,13 @@ class SubCategoryController:
             return {"status": "error", "message": "name is required"}
 
         try:
+            if payload.get("image_base64"):
+                payload["image_path"] = self._save_dataurl_image(payload["image_base64"])
+
             new_id = self.repo.create(payload)
             return {"status": "ok", "id": new_id}
+
         except sqlite3.IntegrityError:
-            # handles unique constraint uq_sub_categories_cat_name
             return {"status": "error", "message": "Sub-category name already exists in this category"}
         except Exception as e:
             return {"status": "error", "message": str(e)}
@@ -36,8 +85,15 @@ class SubCategoryController:
             return {"status": "error", "message": "name is required"}
 
         try:
+            if payload.get("image_base64"):
+                old = self.repo.get_image_path(int(sub_category_id))
+                new_path = self._save_dataurl_image(payload["image_base64"])
+                payload["image_path"] = new_path
+                self._delete_image_if_exists(old)
+
             self.repo.update(int(sub_category_id), payload)
             return {"status": "ok"}
+
         except sqlite3.IntegrityError:
             return {"status": "error", "message": "Sub-category name already exists in this category"}
         except Exception as e:
@@ -46,6 +102,16 @@ class SubCategoryController:
     def toggle(self, sub_category_id: int, is_active: int):
         try:
             self.repo.toggle(int(sub_category_id), int(is_active))
+            return {"status": "ok"}
+        except Exception as e:
+            return {"status": "error", "message": str(e)}
+
+    def delete(self, sub_category_id: int):
+        """Hard delete + delete image file"""
+        try:
+            old = self.repo.get_image_path(int(sub_category_id))
+            self.repo.delete(int(sub_category_id))
+            self._delete_image_if_exists(old)
             return {"status": "ok"}
         except Exception as e:
             return {"status": "error", "message": str(e)}

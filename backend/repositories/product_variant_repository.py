@@ -1,3 +1,4 @@
+# backend/repositories/product_variant_repository.py  (FULL with delete)
 from backend.db import get_conn
 
 class ProductVariantRepository:
@@ -70,3 +71,7 @@ class ProductVariantRepository:
                   updated_at=datetime('now')
               WHERE id=?
             """, (int(is_active), int(variant_id)))
+
+    def delete(self, variant_id: int) -> None:
+        with get_conn() as conn:
+            conn.execute("DELETE FROM product_variants WHERE id=?", (int(variant_id),))

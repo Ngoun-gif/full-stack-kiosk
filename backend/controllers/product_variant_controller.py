@@ -1,3 +1,4 @@
+# backend/controllers/product_variant_controller.py (FULL with delete)
 import sqlite3
 from backend.repositories.product_variant_repository import ProductVariantRepository
 
@@ -29,7 +30,6 @@ class ProductVariantController:
             new_id = self.repo.create(payload)
             return {"status": "ok", "id": new_id}
         except sqlite3.IntegrityError:
-            # could be sku unique OR uq_variants_product_name
             return {"status": "error", "message": "Duplicate variant name for this product OR SKU already exists"}
         except Exception as e:
             return {"status": "error", "message": str(e)}
@@ -56,6 +56,13 @@ class ProductVariantController:
     def toggle(self, variant_id: int, is_active: int):
         try:
             self.repo.toggle(int(variant_id), int(is_active))
+            return {"status": "ok"}
+        except Exception as e:
+            return {"status": "error", "message": str(e)}
+
+    def delete(self, variant_id: int):
+        try:
+            self.repo.delete(int(variant_id))
             return {"status": "ok"}
         except Exception as e:
             return {"status": "error", "message": str(e)}

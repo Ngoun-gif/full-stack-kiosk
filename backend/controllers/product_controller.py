@@ -1,9 +1,54 @@
-import sqlite3
+# backend/controllers/product_controller.py
+import base64, re, uuid, sqlite3
+from pathlib import Path
 from backend.repositories.product_repository import ProductRepository
 
 class ProductController:
     def __init__(self):
         self.repo = ProductRepository()
+
+        # project_root / dashboard / assets / uploads / products
+        project_root = Path(__file__).resolve().parents[2]
+        self.upload_dir = project_root / "dashboard" / "assets" / "uploads" / "products"
+        self.upload_dir.mkdir(parents=True, exist_ok=True)
+
+    def _save_dataurl_image(self, data_url: str) -> str:
+        m = re.match(r"^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$", data_url)
+        if not m:
+            raise ValueError("Invalid image data")
+
+        mime = m.group(1)
+        b64 = m.group(2)
+
+        ext_map = {
+            "image/png": "png",
+            "image/jpeg": "jpg",
+            "image/jpg": "jpg",
+            "image/webp": "webp",
+        }
+        ext = ext_map.get(mime)
+        if not ext:
+            raise ValueError("Unsupported image type (png/jpg/webp only)")
+
+        raw = base64.b64decode(b64)
+        if len(raw) > 2 * 1024 * 1024:
+            raise ValueError("Image too large (max 2MB)")
+
+        filename = f"prd_{uuid.uuid4().hex}.{ext}"
+        (self.upload_dir / filename).write_bytes(raw)
+
+        return f"assets/uploads/products/{filename}"
+
+    def _delete_image_if_exists(self, image_path: str):
+        if not image_path:
+            return
+        project_root = Path(__file__).resolve().parents[2]
+        file_path = project_root / "dashboard" / image_path
+        if file_path.exists():
+            try:
+                file_path.unlink()
+            except Exception:
+                pass
 
     def list_by_sub_category(self, sub_category_id: int, include_inactive=True):
         return {"status": "ok", "data": self.repo.list_by_sub_category(int(sub_category_id), bool(include_inactive))}
@@ -20,17 +65,19 @@ class ProductController:
         if not payload.get("name"):
             return {"status": "error", "message": "name is required"}
 
-        # allow 0 price, but ensure it's numeric
         try:
             payload["base_price"] = float(payload.get("base_price", 0))
         except Exception:
             return {"status": "error", "message": "base_price must be a number"}
 
         try:
+            if payload.get("image_base64"):
+                payload["image_path"] = self._save_dataurl_image(payload["image_base64"])
+
             new_id = self.repo.create(payload)
             return {"status": "ok", "id": new_id}
+
         except sqlite3.IntegrityError:
-            # SKU unique constraint or other constraint
             return {"status": "error", "message": "SKU already exists (must be unique)"}
         except Exception as e:
             return {"status": "error", "message": str(e)}
@@ -47,8 +94,15 @@ class ProductController:
             return {"status": "error", "message": "base_price must be a number"}
 
         try:
+            if payload.get("image_base64"):
+                old = self.repo.get_image_path(int(product_id))
+                new_path = self._save_dataurl_image(payload["image_base64"])
+                payload["image_path"] = new_path
+                self._delete_image_if_exists(old)
+
             self.repo.update(int(product_id), payload)
             return {"status": "ok"}
+
         except sqlite3.IntegrityError:
             return {"status": "error", "message": "SKU already exists (must be unique)"}
         except Exception as e:
@@ -57,6 +111,16 @@ class ProductController:
     def toggle(self, product_id: int, is_active: int):
         try:
             self.repo.toggle(int(product_id), int(is_active))
+            return {"status": "ok"}
+        except Exception as e:
+            return {"status": "error", "message": str(e)}
+
+    def delete(self, product_id: int):
+        """Hard delete + delete image file"""
+        try:
+            old = self.repo.get_image_path(int(product_id))
+            self.repo.delete(int(product_id))
+            self._delete_image_if_exists(old)
             return {"status": "ok"}
         except Exception as e:
             return {"status": "error", "message": str(e)}

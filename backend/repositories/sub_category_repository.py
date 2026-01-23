@@ -1,3 +1,4 @@
+# backend/repositories/sub_category_repository.py
 from backend.db import get_conn
 
 class SubCategoryRepository:
@@ -15,6 +16,14 @@ class SubCategoryRepository:
         with get_conn() as conn:
             rows = conn.execute(sql, params).fetchall()
         return [dict(r) for r in rows]
+
+    def get_image_path(self, sub_category_id: int):
+        with get_conn() as conn:
+            row = conn.execute(
+                "SELECT image_path FROM sub_categories WHERE id=?",
+                (int(sub_category_id),)
+            ).fetchone()
+        return row["image_path"] if row else None
 
     def get(self, sub_category_id: int):
         with get_conn() as conn:
@@ -40,12 +49,13 @@ class SubCategoryRepository:
             return cur.lastrowid
 
     def update(self, sub_category_id: int, payload: dict) -> None:
+        # ✅ keep old image_path when no new image uploaded
         with get_conn() as conn:
             conn.execute("""
               UPDATE sub_categories
               SET category_id=?,
                   name=?,
-                  image_path=?,
+                  image_path=COALESCE(?, image_path),
                   sort_order=?,
                   is_active=?,
                   updated_at=datetime('now')
@@ -53,7 +63,7 @@ class SubCategoryRepository:
             """, (
                 int(payload["category_id"]),
                 payload["name"],
-                payload.get("image_path"),
+                payload.get("image_path"),  # None => keep old image_path
                 int(payload.get("sort_order", 0)),
                 int(payload.get("is_active", 1)),
                 int(sub_category_id)
@@ -67,3 +77,7 @@ class SubCategoryRepository:
                   updated_at=datetime('now')
               WHERE id=?
             """, (int(is_active), int(sub_category_id)))
+
+    def delete(self, sub_category_id: int) -> None:
+        with get_conn() as conn:
+            conn.execute("DELETE FROM sub_categories WHERE id=?", (int(sub_category_id),))
