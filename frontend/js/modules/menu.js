@@ -34,6 +34,7 @@ Kiosk.modules.menu = {
   },
 
   computed: {
+
     total() {
       const cart = this.router.state.cart || [];
       return cart.reduce((sum, i) => {
@@ -50,6 +51,21 @@ Kiosk.modules.menu = {
       const cart = this.router.state.cart || [];
       return cart.reduce((s, i) => s + Number(i.qty || 1), 0);
     },
+
+    cartQtyByProduct() {
+      const cart = this.router.state.cart || [];
+      const map = {};
+
+      for (const line of cart) {
+        const pid = Number(line.product_id);
+        const qty = Number(line.qty || 1);
+        if (!pid) continue;
+        map[pid] = (map[pid] || 0) + qty;
+      }
+
+      return map;
+    },
+
 
     safeCategories() {
       return (this.store.categories || []).filter(Boolean);
@@ -74,39 +90,26 @@ Kiosk.modules.menu = {
   },
 
   methods: {
-    // ✅ accept: string path OR object with image_path
-    // ✅ handle file:// base (frontend/_built.html) => root assets must be ../assets/...
     img(x) {
       const p =
         (typeof x === "string") ? x :
         (x && typeof x === "object") ? (x.image_path || x.image || "") :
         "";
 
-      // placeholder inside frontend/assets
       if (!p) return "./assets/placeholder.png";
 
       const clean = String(p).replace(/^\/+/, "");
 
-      // DB: assets/uploads/...
-      // REAL FILE NOW: dashboard/assets/uploads/...
-      if (clean.startsWith("assets/uploads/")) {
-        return "../dashboard/" + clean;   // -> ../dashboard/assets/uploads/...
-      }
+      // DB: assets/uploads/... -> real file: dashboard/assets/uploads/...
+      if (clean.startsWith("assets/uploads/")) return "../dashboard/" + clean;
 
-      // If DB already contains dashboard/...
-      if (clean.startsWith("dashboard/")) {
-        return "../" + clean; // -> ../dashboard/...
-      }
+      // if db stores dashboard/...
+      if (clean.startsWith("dashboard/")) return "../" + clean;
 
       // fallback
       if (clean.startsWith("assets/")) return "../" + clean;
 
       return "./" + clean;
-    },
-
-
-    formatMoney(v) {
-      return Number(v || 0).toFixed(2);
     },
 
     goService() {
@@ -115,10 +118,6 @@ Kiosk.modules.menu = {
 
     goCheckout() {
       this.router.go("checkout");
-    },
-
-    goCart() {
-      this.router.go("cart");
     },
 
     async initMenu() {
@@ -131,6 +130,9 @@ Kiosk.modules.menu = {
         if (res?.status !== "ok") throw new Error(res?.message || "Menu load failed");
 
         this.menuAll = res.data || this.menuAll;
+
+        // ✅ share for product-variant page
+        this.router.state.menuAll = this.menuAll;
 
         this.store.categories = (this.menuAll.categories || []).filter(Boolean);
 
@@ -162,15 +164,17 @@ Kiosk.modules.menu = {
       this.router.state.categoryId = id;
       this.store.catalog.categoryId = id;
 
+      // reset sub selection
       this.router.state.subCategoryId = 0;
       this.store.catalog.subCategoryId = 0;
 
-      // NOTE: keys from backend are ints; JS object keys become strings, but [id] still works
+      // load subcategories
       this.store.subCategories = (this.menuAll.sub_by_cat?.[id] || []).filter(Boolean);
       this.store.products = [];
 
       if (!opts.silent) this.router.setFooter("Category selected");
 
+      // auto select first subcategory
       if (this.store.subCategories.length) {
         const firstSubId = Number(this.store.subCategories[0].id);
         this.selectSubCategory(firstSubId, { silent: true });
@@ -183,9 +187,11 @@ Kiosk.modules.menu = {
       const id = Number(subCategoryId || 0);
       if (!id) return;
 
+      // ✅ update active state
       this.router.state.subCategoryId = id;
       this.store.catalog.subCategoryId = id;
 
+      // load products
       this.store.products = (this.menuAll.prod_by_sub?.[id] || []).filter(Boolean);
 
       if (!opts.silent) {
@@ -195,8 +201,20 @@ Kiosk.modules.menu = {
 
     openProduct(p) {
       if (!p?.id) return;
-      this.router.state.productId = Number(p.id);
-      this.router.go("product_variant");
+
+      const pid = Number(p.id);
+      const cart = this.router.state.cart || [];
+
+      // ✅ find last cart line of this product (edit the most recent)
+      let editIndex = -1;
+      for (let i = cart.length - 1; i >= 0; i--) {
+        if (Number(cart[i]?.product_id) === pid) { editIndex = i; break; }
+      }
+
+      this.router.state.productId = pid;
+      this.router.state.editCartIndex = (editIndex >= 0) ? editIndex : null; // ✅ set edit index or null
+      this.router.go("product-variant");
     }
+
   }
 };

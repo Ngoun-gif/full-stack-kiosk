@@ -1,149 +1,264 @@
-/* ===============================
-   MENU PAGE LAYOUT
-================================ */
-
-.menu-page {
-  height: 100vh;
-  width: 100%;
-  background: #f8f9fa;
-  overflow: hidden;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+/* ===== MENU STYLE (Screenshot) ===== */
+.m2{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:#fbf7d6; /* cream */
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
-/* ===============================
-   CATEGORY HEADER
-================================ */
-
-#slot-category {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: #ffffff;
+/* ================================
+   TOP CATEGORIES (ICON ROW)
+   ================================ */
+.m2-top{
+  background:#fff;
+  padding: 10px 10px 0;
 }
-
-#slot-category .btn {
-  border-radius: 999px;
-  padding: 8px 16px;
-  font-weight: 600;
-  white-space: nowrap;
+.m2-catbar{
+  display:flex;
+  justify-content:center;
+  gap: 22px;
+  padding: 8px 0 10px;
 }
-
-/* ===============================
-   SUB-CATEGORY HEADER
-================================ */
-
-#slot-sub-category {
-  position: sticky;
-  top: 56px; /* below category header */
-  z-index: 9;
-  background: #f8f9fa;
-}
-
-#slot-sub-category .btn {
-  border-radius: 999px;
-  padding: 6px 14px;
-  white-space: nowrap;
-}
-
-/* ===============================
-   PRODUCT AREA
-================================ */
-
-#slot-product {
-  background: #f8f9fa;
-}
-
-/* Product cards */
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 12px;
-}
-
-.card {
+.m2-cat{
+  border:0;
+  background:transparent;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  padding: 6px 10px;
   border-radius: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
-  cursor: pointer;
+  cursor:pointer;
+}
+.m2-catimg{
+  width:44px;
+  height:44px;
+  object-fit:contain;
+}
+.m2-catname{
+  font-weight:900;
+  font-size:12px;
+  color:#111;
+}
+.m2-cat.active .m2-catname{
+  background:#ffe600;
+  padding: 3px 10px;
+  border-radius: 999px;
 }
 
-.card:active {
-  transform: scale(0.98);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+/* ================================
+   SUB-CATEGORY (YELLOW STRIP)
+   Inactive = transparent
+   Active = white pill
+   ================================ */
+.m2-subwrap{
+  background:#ffe600;
+  padding:10px 10px;
+}
+.m2-subbar{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.m2-subbar::-webkit-scrollbar{ height:6px; }
+.m2-subbar::-webkit-scrollbar-thumb{
+  background:rgba(0,0,0,.15);
+  border-radius:999px;
 }
 
-.card img {
-  border-top-left-radius: 14px;
-  border-top-right-radius: 14px;
+.m2-pill{
+  border:0;
+  background:transparent;        /* ✅ inactive transparent */
+  color:#111;
+  font-weight:900;
+  border-radius:999px;
+  padding:10px 14px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  white-space:nowrap;
+  cursor:pointer;
+}
+.m2-pillicon{
+  width:22px;
+  height:22px;
+  object-fit:contain;
 }
 
-/* ===============================
-   CHECKOUT FOOTER
-================================ */
-
-#slot-checkout {
-  position: sticky;
-  bottom: 0;
-  z-index: 20;
-  background: #ffffff;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+/* ✅ active pill is white */
+.m2-pill.active{
+  background:#fff;
+  color:#111;
+  box-shadow:0 6px 14px rgba(0,0,0,.18);
 }
 
-#slot-checkout button {
-  border-radius: 14px;
-  font-size: 1.1rem;
-  padding: 12px 24px;
+/* optional hover (desktop only) */
+.m2-pill:not(.active):hover{
+  background:rgba(255,255,255,.35);
 }
 
-/* ===============================
-   VARIANT MODAL (BOTTOM SHEET)
-================================ */
-
-.variant-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
+/* ================================
+   PRODUCT GRID
+   ================================ */
+.m2-body{
+  flex:1;
+  overflow:auto;
+  padding: 14px 10px 88px; /* space for footer */
+}
+.m2-grid{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+@media (max-width: 900px){
+  .m2-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 650px){
+  .m2-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-.variant-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+.m2-card{
+  border:0;
+  background:transparent;
+  text-align:center;
+  padding: 6px 4px;
+  cursor:pointer;
+}
+.m2-card:active{ transform: scale(.99); }
+
+.m2-prdimg{
+  width: 120px;
+  height: 120px;
+  object-fit:contain;
+  display:block;
+  margin: 0 auto 6px;
+}
+.m2-prdname{
+  font-weight:950;
+  font-size:12px;
+  color:#111;
+  line-height:1.2;
+}
+.m2-prdprice{
+  font-weight:950;
+  font-size:12px;
+  color:#111;
+  opacity:.9;
+  margin-top:4px;
 }
 
-.variant-sheet {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  max-height: 75vh;
-  overflow-y: auto;
-  animation: slideUp 0.25s ease-out;
+.m2-empty{
+  text-align:center;
+  color:#6b7280;
+  font-weight:900;
+  padding: 40px 0;
+}
+.m2-prdimgwrap{
+  position:relative;
+  width:120px;
+  height:120px;
+  margin:0 auto 6px;
 }
 
-/* ===============================
-   ANIMATIONS
-================================ */
-
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
+.m2-prdimg{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
 }
 
-/* ===============================
-   TOUCH FRIENDLY TUNING
-================================ */
-
-button {
-  touch-action: manipulation;
+.m2-prdbadge{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  min-width:22px;
+  height:22px;
+  padding:0 6px;
+  border-radius:999px;
+  background:#111;
+  color:#ffe600;
+  font-weight:950;
+  font-size:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 6px 14px rgba(0,0,0,.25);
 }
 
-::-webkit-scrollbar {
-  display: none;
+
+/* ================================
+   FOOTER BAR
+   ================================ */
+.m2-footer{
+  position:fixed;
+  left:0; right:0; bottom:0;
+  background:#fff;
+  border-top: 1px solid rgba(0,0,0,.08);
+  padding: 10px 10px;
+  display:grid;
+  grid-template-columns: 120px 1fr 140px;
+  align-items:center;
+  gap: 10px;
+}
+
+.m2-back{
+  border:0;
+  background:#efefef;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-weight:950;
+  cursor:pointer;
+}
+.m2-back:active{ transform: scale(.99); }
+
+.m2-total{
+  text-align:center;
+}
+.m2-total-label{
+  font-size:11px;
+  color:#6b7280;
+  font-weight:900;
+}
+.m2-total-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap: 10px;
+  margin-top:2px;
+}
+.m2-bubble{
+  min-width: 34px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background:#e5e7eb;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:950;
+  font-size:12px;
+  color:#111;
+}
+.m2-total-amount{
+  font-weight:950;
+  color:#111;
+}
+
+/* Checkout button */
+.m2-checkout{
+  border:0;
+  background:#ffe600;
+  border-radius:8px;
+  padding:12px 14px;
+  font-weight:950;
+  color:#111;
+  cursor:pointer;
+}
+.m2-checkout:active{ transform: scale(.99); }
+.m2-checkout:disabled{
+  opacity:.5;
+  cursor:not-allowed;
 }
