@@ -4,48 +4,41 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- ✅ CSS -->
   <link rel="stylesheet" href="./css/bootstrap.min.css">
   <link rel="stylesheet" href="./css/kiosk.css">
   <link rel="stylesheet" href="./css/splash.css">
   <link rel="stylesheet" href="./css/service.css">
   <link rel="stylesheet" href="./css/menu.css">
-  <link rel="stylesheet" href ="./css/payment-method.css">
-  <link rel="stylesheet" href ="./css/qr-code-payment.css">
-
-
-
+  <link rel="stylesheet" href="./css/payment-method.css">
+  <link rel="stylesheet" href="./css/qr-code-payment.css">
 </head>
 
 <body class="bg-light">
-
-  <div id="app"></div>
+  <div id="kioskApp"></div>
 
   <!-- templates injected here by kiosk_main.py -->
 
-  <!-- scripts (order matters) -->
-  <script src="./js/bootstrap.bundle.min.js"></script>
+  <!-- ✅ Vendor JS first -->
+  <script defer src="./assets/js/bootstrap.bundle.min.js"></script>
 
-  <script src="./js/core/state.js"></script>
-  <script src="./js/core/ui.js"></script>
-  <script src="./js/core/data.js"></script>
-  <script src="./js/core/api.js"></script>
-  <script src="./js/core/router.js"></script>
+  <!-- ✅ Vue (optional, safe to keep) -->
+  <script defer src="./assets/js/vue.global.prod.js"></script>
 
-  <script src="./js/modules/splash.js"></script>
-  <script src="./js/modules/service.js"></script>
-  <script src="js/modules/menu.js"></script>
-  <script src="js/modules/category.js"></script>
-  <script src="js/modules/sub-category.js"></script>
-  <script src="js/modules/product.js"></script>
-  <script src="js/modules/variant.js"></script>
-  <script src="js/modules/checkout.js"></script>
-  <script src="js/modules/cart.js"></script>
-  <script src="js/modules/payment-method.js"></script>
-  <script src ="js/modules/payment.js"></script>
+  <!-- ✅ Core -->
+  <script defer src="./js/core/tpl.js"></script>
+  <script defer src="./js/core/api.js"></script>
+  <script defer src="./js/core/router.js"></script>
+
+  <!-- ✅ Modules -->
+  <script defer src="./js/modules/splash.js"></script>
+  <script defer src="./js/modules/service.js"></script>
+  <script defer src="./js/modules/menu.js"></script>
 
 
+  <!-- later add: service.js, menu.js, product.js ... -->
 
-
-  <script src="./app.js"></script>
+  <!-- ✅ Start app last -->
+  <script defer src="./app.js"></script>
 </body>
 </html>

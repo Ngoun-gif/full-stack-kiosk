@@ -2,7 +2,9 @@
 from backend.controllers.category_controller import CategoryController
 from backend.controllers.sub_category_controller import SubCategoryController
 from backend.controllers.product_controller import ProductController
-from backend.controllers.product_variant_controller import ProductVariantController
+from backend.controllers.variant_group_controller import VariantGroupController
+from backend.controllers.variant_value_controller import VariantValueController
+from backend.controllers.kiosk_menu_controller import KioskMenuController
 
 
 class AppApi:
@@ -16,7 +18,10 @@ class AppApi:
         self.category = CategoryController()
         self.sub_category = SubCategoryController()
         self.product = ProductController()
-        self.variant = ProductVariantController()  # ✅ use self.variant everywhere
+        self.variant_group = VariantGroupController()
+        self.variant_value = VariantValueController()
+        self.kiosk_menu = KioskMenuController()
+
 
     # =========================
     # Dashboard CRUD: Category
@@ -80,24 +85,43 @@ class AppApi:
         # if you have controller.delete; if not, remove this
         return self.product.delete(int(product_id))
 
-    # =========================
-    # Dashboard CRUD: Product Variant
-    # =========================
-    def variant_list(self, product_id, include_inactive=True):
-        return self.variant.list_by_product(int(product_id), bool(include_inactive))
+    # Variant Groups
+    def variant_group_list(self, product_id, include_inactive=True):
+        return self.variant_group.list_by_product(int(product_id), bool(include_inactive))
 
-    def variant_get(self, variant_id):
-        return self.variant.get(int(variant_id))
+    def variant_group_create(self, payload):
+        return self.variant_group.create(payload or {})
 
-    def variant_create(self, payload):
-        return self.variant.create(payload or {})
+    def variant_group_update(self, group_id, payload):
+        return self.variant_group.update(int(group_id), payload or {})
 
-    def variant_update(self, variant_id, payload):
-        return self.variant.update(int(variant_id), payload or {})
+    def variant_group_toggle(self, group_id, is_active):
+        return self.variant_group.toggle(int(group_id), int(is_active))
 
-    def variant_toggle(self, variant_id, is_active):
-        return self.variant.toggle(int(variant_id), int(is_active))
+    def variant_group_delete(self, group_id):
+        return self.variant_group.delete(int(group_id))
 
-    def variant_delete(self, variant_id):
-        # if you have controller.delete; if not, remove this
-        return self.variant.delete(int(variant_id))
+    def variant_groups_with_values(self, product_id, include_inactive=True):
+        return self.variant_group.list_groups_with_values(int(product_id), bool(include_inactive))
+
+    # Variant Values
+    def variant_value_list(self, group_id, include_inactive=True):
+        return self.variant_value.list_by_group(int(group_id), bool(include_inactive))
+
+    def variant_value_create(self, payload):
+        return self.variant_value.create(payload or {})
+
+    def variant_value_update(self, value_id, payload):
+        return self.variant_value.update(int(value_id), payload or {})
+
+    def variant_value_toggle(self, value_id, is_active):
+        return self.variant_value.toggle(int(value_id), int(is_active))
+
+    def variant_value_delete(self, value_id):
+        return self.variant_value.delete(int(value_id))
+
+    # Kiosk: load all menu upfront
+    def kiosk_menu_all(self):
+        return self.kiosk_menu.load_all()
+
+

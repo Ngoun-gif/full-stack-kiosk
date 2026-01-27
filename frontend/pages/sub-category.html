@@ -1,7 +1,15 @@
-<template id="tpl-sub-category">
-  <div class="bg-warning border-bottom py-3">
-    <div class="container">
-      <div id="subcat-items" class="row g-2 justify-content-center align-items-center"></div>
-    </div>
-  </div>
-</template>
+<div
+  v-for="sc in store.subCategories"
+  :key="sc.id"
+  v-if="sc"
+  class="menu-sub-category"
+  :class="{ active: sc.id === store.catalog.subCategoryId }"
+  @click="selectSubCategory(sc.id)"
+>
+  <img
+    class="menu-sub-category-img"
+    :src="img(sc)"
+    alt=""
+  />
+  <div class="menu-sub-category-name">{{ sc.name }}</div>
+</div>

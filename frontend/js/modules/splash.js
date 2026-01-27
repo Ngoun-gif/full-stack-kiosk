@@ -1,25 +1,32 @@
+// frontend/js/modules/splash.js
 window.Kiosk = window.Kiosk || {};
-Kiosk.pages = Kiosk.pages || {};
+Kiosk.modules = Kiosk.modules || {};
 
-Kiosk.pages.splash = function () {
-  Kiosk.ui.render("tpl-splash");
+Kiosk.modules.splash = {
+  template: tpl("tpl-splash"),
 
-  window.goServiceFromSplash = () => {
-    Kiosk.router.go("service");
-  };
+  mounted() {
+    // init bootstrap carousel AFTER DOM is ready
+    const el = document.getElementById("splashCarousel");
+    if (el && window.bootstrap?.Carousel) {
+      const old = bootstrap.Carousel.getInstance(el);
+      if (old) old.dispose();
 
+      new bootstrap.Carousel(el, {
+        interval: 2500,
+        ride: "carousel",
+        pause: false,
+        touch: false,
+        wrap: true
+      });
+    }
 
-  const el = document.getElementById("splashCarousel");
-  if (el && window.bootstrap && bootstrap.Carousel) {
-    const old = bootstrap.Carousel.getInstance(el);
-    if (old) old.dispose();
+    Kiosk.router.setFooter("Welcome");
+  },
 
-    new bootstrap.Carousel(el, {
-      interval: 2500,
-      ride: "carousel",
-      pause: false,
-      touch: false,
-      wrap: true
-    });
+  methods: {
+    goService() {
+      Kiosk.router.go("service");
+    }
   }
 };

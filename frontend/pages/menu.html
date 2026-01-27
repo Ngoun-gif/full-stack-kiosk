@@ -1,14 +1,86 @@
-<template id="tpl-menu">
-  <div class="d-flex flex-column vh-100">
-    <div id="slot-category"></div>
-    <div id="slot-sub-category"></div>
 
-    <main class="flex-grow-1 overflow-auto">
-      <div id="slot-product"></div>
+  <div class="menu-page">
+
+    <!-- ===== CATEGORY ROW ===== -->
+    <section class="row-scroll categories-row">
+      <button
+        v-for="c in safeCategories"
+        :key="c.id"
+        class="chip-card"
+        :class="{ active: Number(store.catalog.categoryId) === Number(c.id) }"
+        @click="selectCategory(c.id)"
+      >
+        <img
+          class="chip-img"
+          :src="img(c.image_path)"
+          @error="e => e.target.src='./assets/placeholder.png'"
+          alt=""
+        >
+        <div class="chip-text">{{ c.name }}</div>
+      </button>
+    </section>
+
+    <!-- ===== SUB-CATEGORY ROW ===== -->
+    <section class="row-scroll subcategories-row">
+      <button
+        v-for="s in safeSubCategories"
+        :key="s.id"
+        class="chip-pill"
+        :class="{ active: Number(store.catalog.subCategoryId) === Number(s.id) }"
+        @click="selectSubCategory(s.id)"
+      >
+        <img
+          class="pill-img"
+          :src="img(s.image_path)"
+          @error="e => e.target.src='./assets/placeholder.png'"
+          alt=""
+        >
+        <span class="pill-text">{{ s.name }}</span>
+      </button>
+    </section>
+
+    <!-- ===== PRODUCT GRID ===== -->
+    <main class="products-area">
+      <div class="products-grid">
+        <div
+          v-for="p in safeProducts"
+          :key="p.id"
+          class="prd-card"
+          @click="openProduct(p)"
+        >
+          <img
+            class="prd-img"
+            :src="img(p.image_path)"
+            @error="e => e.target.src='./assets/placeholder.png'"
+            alt=""
+          >
+          <div class="prd-body">
+            <div class="prd-name">{{ p.name }}</div>
+            <div class="prd-desc" v-if="p.description">{{ p.description }}</div>
+            <div class="prd-price">$ {{ Number(p.base_price || 0).toFixed(2) }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="!safeProducts.length && !store.loading" class="empty-state">
+        No products
+      </div>
     </main>
 
-    <div id="slot-checkout-footer"></div>
+    <!-- ===== STICKY CART FOOTER ===== -->
+    <footer class="cart-footer">
+      <div class="cart-inner">
+        <div class="cart-left">
+          <div class="cart-label">Total</div>
+          <div class="cart-total">$ {{ total.toFixed(2) }}</div>
+          <div class="cart-items">{{ count }} items</div>
+        </div>
 
-    <div id="slot-variant"></div>
+        <button class="btn-pay" :disabled="count === 0" @click="goCheckout">
+          Proceed to Payment
+        </button>
+      </div>
+    </footer>
+
   </div>
-</template>
+

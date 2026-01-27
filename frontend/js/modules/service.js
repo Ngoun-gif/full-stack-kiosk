@@ -1,32 +1,38 @@
+// frontend/js/modules/service.js
 window.Kiosk = window.Kiosk || {};
-Kiosk.pages = Kiosk.pages || {};
+Kiosk.modules = Kiosk.modules || {};
 
-Kiosk.pages.service = function () {
-  Kiosk.ui.render("tpl-service");
+Kiosk.modules.service = {
+  template: tpl("tpl-service"),
 
-  Kiosk.state = Kiosk.state || {};
-  if (!Kiosk.state.service) Kiosk.state.service = "dine_in";
+  computed: {
+    service() {
+      return Kiosk.router.state.service;
+    }
+  },
 
-  window.goSplash = () => Kiosk.router.go("splash");
+  mounted() {
+    // default selection
+    if (!Kiosk.router.state.service) {
+      Kiosk.router.state.service = "dine_in";
+    }
+    Kiosk.router.setFooter("Select service");
+  },
 
-  window.selectService = (mode) => {
-    Kiosk.state.service = mode;
+  methods: {
+    goSplash() {
+      Kiosk.router.go("splash");
+    },
 
-    const dine = document.getElementById("dineInOption");
-    const take = document.getElementById("takeAwayOption");
+    selectService(mode) {
+      if (mode !== "dine_in" && mode !== "take_away") return;
+      Kiosk.router.state.service = mode;
+      Kiosk.router.setFooter(`Service: ${mode}`);
+    },
 
-    if (dine) dine.classList.toggle("selected", mode === "dine_in");
-    if (take) take.classList.toggle("selected", mode === "takeaway");
-  };
-
-  window.continueService = () => {
-    // go to next screen
-    Kiosk.router.go("menu");
-  };
-
-  // If you want "tap card = go menu immediately", uncomment:
-  // window.selectService = (mode) => { ...; Kiosk.router.go("menu"); };
-
-  // apply selection on load
-  window.selectService(Kiosk.state.service);
+    continueService() {
+      if (!Kiosk.router.state.service) return;
+      Kiosk.router.go("menu");
+    }
+  }
 };

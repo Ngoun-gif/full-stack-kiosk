@@ -1,11 +1,12 @@
-# backend/repositories/product_variant_repository.py  (FULL with delete)
+# backend/repositories/variant_group_repository.py
 from backend.db import get_conn
 
-class ProductVariantRepository:
+class VariantGroupRepository:
     def list_by_product(self, product_id: int, include_inactive: bool = True):
         sql = """
-          SELECT id, product_id, name, price_delta, sku, sort_order, is_active, created_at, updated_at
-          FROM product_variants
+          SELECT id, product_id, name, is_required, max_select, sort_order,
+                 is_active, created_at, updated_at
+          FROM variant_groups
           WHERE product_id=?
         """
         params = [int(product_id)]
@@ -17,38 +18,39 @@ class ProductVariantRepository:
             rows = conn.execute(sql, params).fetchall()
         return [dict(r) for r in rows]
 
-    def get(self, variant_id: int):
+    def get(self, group_id: int):
         with get_conn() as conn:
             row = conn.execute("""
-              SELECT id, product_id, name, price_delta, sku, sort_order, is_active, created_at, updated_at
-              FROM product_variants
+              SELECT id, product_id, name, is_required, max_select, sort_order,
+                     is_active, created_at, updated_at
+              FROM variant_groups
               WHERE id=?
-            """, (int(variant_id),)).fetchone()
+            """, (int(group_id),)).fetchone()
         return dict(row) if row else None
 
     def create(self, payload: dict) -> int:
         with get_conn() as conn:
             cur = conn.execute("""
-              INSERT INTO product_variants(product_id, name, price_delta, sku, sort_order, is_active)
+              INSERT INTO variant_groups(product_id, name, is_required, max_select, sort_order, is_active)
               VALUES (?, ?, ?, ?, ?, ?)
             """, (
                 int(payload["product_id"]),
                 payload["name"],
-                float(payload.get("price_delta", 0)),
-                payload.get("sku"),
+                int(payload.get("is_required", 0)),
+                int(payload.get("max_select", 1)),
                 int(payload.get("sort_order", 0)),
                 int(payload.get("is_active", 1)),
             ))
             return cur.lastrowid
 
-    def update(self, variant_id: int, payload: dict) -> None:
+    def update(self, group_id: int, payload: dict) -> None:
         with get_conn() as conn:
             conn.execute("""
-              UPDATE product_variants
+              UPDATE variant_groups
               SET product_id=?,
                   name=?,
-                  price_delta=?,
-                  sku=?,
+                  is_required=?,
+                  max_select=?,
                   sort_order=?,
                   is_active=?,
                   updated_at=datetime('now')
@@ -56,22 +58,22 @@ class ProductVariantRepository:
             """, (
                 int(payload["product_id"]),
                 payload["name"],
-                float(payload.get("price_delta", 0)),
-                payload.get("sku"),
+                int(payload.get("is_required", 0)),
+                int(payload.get("max_select", 1)),
                 int(payload.get("sort_order", 0)),
                 int(payload.get("is_active", 1)),
-                int(variant_id)
+                int(group_id)
             ))
 
-    def toggle(self, variant_id: int, is_active: int) -> None:
+    def toggle(self, group_id: int, is_active: int) -> None:
         with get_conn() as conn:
             conn.execute("""
-              UPDATE product_variants
+              UPDATE variant_groups
               SET is_active=?,
                   updated_at=datetime('now')
               WHERE id=?
-            """, (int(is_active), int(variant_id)))
+            """, (int(is_active), int(group_id)))
 
-    def delete(self, variant_id: int) -> None:
+    def delete(self, group_id: int) -> None:
         with get_conn() as conn:
-            conn.execute("DELETE FROM product_variants WHERE id=?", (int(variant_id),))
+            conn.execute("DELETE FROM variant_groups WHERE id=?", (int(group_id),))

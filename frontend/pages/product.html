@@ -1,3 +1,17 @@
-<template id="tpl-product">
-  <div id="product-items"></div>
-</template>
+<div
+  v-for="p in store.products"
+  :key="p.id"
+  v-if="p"
+  class="product-card"
+  @click="openProduct(p)"
+>
+  <img
+    class="product-img"
+    :src="img(p)"
+    alt=""
+  />
+  <div class="product-info">
+    <div class="product-name">{{ p.name }}</div>
+    <div class="product-price">{{ formatMoney(p.base_price) }}</div>
+  </div>
+</div>

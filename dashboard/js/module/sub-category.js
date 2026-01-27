@@ -51,6 +51,7 @@ Dashboard.modules.sub_category = {
         this.categoryId = this.categories[0].id;
       }
       if (this.categoryId) await this.load();
+
     },
 
     async loadCategories() {
@@ -70,6 +71,11 @@ Dashboard.modules.sub_category = {
           this.rows = [];
           return;
         }
+        console.log("Dashboard sub_category_list", {
+        categoryId: this.categoryId,
+        includeInactive: this.includeInactive
+      });
+
 
         Dashboard.router.setFooter("Loading sub-categories...");
         const res = await Api.call("sub_category_list", this.categoryId, this.includeInactive);

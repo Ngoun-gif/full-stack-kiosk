@@ -1,21 +1,38 @@
-function startApp() {
-  const app = document.getElementById("app");
-  if (app) app.innerHTML = "<div style='padding:16px;font-size:20px'>Starting...</div>";
+// kiosk_main/app.js
+window.Kiosk = window.Kiosk || {};
+Kiosk.modules = Kiosk.modules || {};
 
-  console.log("startApp fired");
-  console.log("Kiosk exists?", !!window.Kiosk);
-  console.log("router exists?", !!(window.Kiosk && Kiosk.router));
+const { createApp } = Vue;
 
-  if (!window.Kiosk || !Kiosk.router) {
-    console.error("Kiosk.router missing");
-    return;
+(function bootstrapKiosk() {
+  const app = createApp({
+    data() {
+      return {
+        router: Kiosk.router
+      };
+    },
+
+    computed: {
+      currentView() {
+        return Kiosk.modules[this.router.state.route] || Kiosk.modules.splash;
+      }
+    },
+
+    template: `
+      <div class="kiosk-shell">
+        <component :is="currentView"></component>
+        <div class="kiosk-footer">{{ router.state.footerMsg }}</div>
+      </div>
+    `
+  });
+
+  // register all modules
+  for (const [name, comp] of Object.entries(Kiosk.modules)) {
+    app.component(name, comp);
   }
 
-  if (Kiosk.api && Kiosk.api.init) Kiosk.api.init();
+  app.mount("#kioskApp");
 
-  console.log("calling router.start()");
-  Kiosk.router.start();
-}
-
-window.addEventListener("DOMContentLoaded", () => setTimeout(startApp, 0));
-window.addEventListener("pywebviewready", () => setTimeout(startApp, 0));
+  // start at splash
+  Kiosk.router.go("splash");
+})();

@@ -1,20 +1,24 @@
+// kiosk_main/js/core/router.js
 window.Kiosk = window.Kiosk || {};
-Kiosk.pages = Kiosk.pages || {};
-
-console.log("router.js loaded");
 
 Kiosk.router = {
-  start() {
-    console.log("router.start()");
-    this.go("splash"); // or "menu" for testing
-  },
+  state: Vue.reactive({
+    route: "splash",
+    footerMsg: "Ready",
+
+    // kiosk states
+    service: null,
+    categoryId: 0,
+    subCategoryId: 0,
+    cart: []
+  }),
+
   go(name) {
-    console.log("router.go()", name);
-    const fn = Kiosk.pages[name];
-    if (!fn) {
-      console.error("Route not found:", name, "Available:", Object.keys(Kiosk.pages));
-      return;
-    }
-    fn();
+    this.state.route = name;
+    this.state.footerMsg = `Open: ${name}`;
+  },
+
+  setFooter(msg) {
+    this.state.footerMsg = msg;
   }
 };
