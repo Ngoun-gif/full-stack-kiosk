@@ -210,6 +210,7 @@ Kiosk.modules["product-variant"] = {
       const line = {
         product_id: Number(this.product.id),
         name: this.product.name,
+        image_path: this.product.image_path,   // ✅ add this
         base_price: Number(this.product.base_price || 0),
         qty: Number(this.qty || 1),
         variants,
@@ -240,6 +241,7 @@ Kiosk.modules["product-variant"] = {
       this.router.state.editCartIndex = null;
       this.editIndex = null;
       this.router.go("menu");
-    }
+    },
+
   }
 };

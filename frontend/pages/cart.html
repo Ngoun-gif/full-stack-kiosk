@@ -1,0 +1,86 @@
+<div class="c1">
+
+  <!-- TOP BAR -->
+  <div class="c1-top">
+    <button class="c1-back" type="button" @click="goMenu">← Back</button>
+    <div class="c1-title">Your Order</div>
+    <div style="width:90px;"></div>
+  </div>
+
+  <!-- BODY -->
+  <div class="c1-body">
+
+    <div v-if="!lines.length" class="c1-empty">
+      Your cart is empty
+    </div>
+
+    <div v-else class="c1-list">
+
+      <div v-for="(it, idx) in lines" :key="idx" class="c1-item">
+
+        <!-- image -->
+        <div class="c1-thumb">
+          <img
+            class="c1-img"
+            :src="img(it.image_path)"
+            @error="e => e.target.src='./assets/placeholder.png'"
+            alt=""
+          >
+        </div>
+
+        <!-- info -->
+        <div class="c1-item-main">
+          <div class="c1-name">{{ it.name }}</div>
+
+          <div v-if="it.variants && it.variants.length" class="c1-variants">
+            <div v-for="(v, vi) in it.variants" :key="vi" class="c1-varline">
+              <span class="c1-vg">{{ v.group_name }}</span>
+              <span class="c1-vv">{{ v.value_name }}</span>
+              <span v-if="Number(v.extra_price || 0) > 0" class="c1-vp">
+                +{{ Number(v.extra_price).toFixed(2) }}
+              </span>
+            </div>
+          </div>
+
+          <div class="c1-meta">
+            <div class="c1-qtybox">
+              <button class="c1-qtybtn" type="button" @click="decQty(idx)">−</button>
+              <div class="c1-qtynum">{{ it.qty }}</div>
+              <button class="c1-qtybtn" type="button" @click="incQty(idx)">+</button>
+            </div>
+
+            <div class="c1-price">
+              $ {{ Number(it.line_total || 0).toFixed(2) }}
+            </div>
+          </div>
+        </div>
+
+        <!-- actions -->
+        <div class="c1-actions">
+          <button class="c1-btn c1-edit" type="button" @click="editItem(idx)">
+            Edit
+          </button>
+          <button class="c1-btn c1-remove" type="button" @click="removeItem(idx)">
+            Remove
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="c1-footer">
+    <div class="c1-totalbox">
+      <div class="c1-total-label">Total</div>
+      <div class="c1-total">$ {{ total.toFixed(2) }}</div>
+      <div class="c1-count">{{ count }} items</div>
+    </div>
+
+    <button class="c1-confirm" type="button" :disabled="count === 0" @click="confirmOrder">
+      Confirm Order
+    </button>
+  </div>
+
+</div>

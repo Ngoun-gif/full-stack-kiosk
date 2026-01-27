@@ -1,58 +1,65 @@
-/* ===== Product Variant (Screenshot Style) ===== */
+/* ===== PRODUCT VARIANT (KIOSK 1080 x 1920) ===== */
 .pv2{
   height:100vh;
+  width:100%;
   display:flex;
   flex-direction:column;
-  background:#fbf7d6; /* light cream */
+  background:#fbf7d6;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
 /* Top header (yellow) */
 .pv2-top{
   background:#ffe600;
-  padding: 14px 14px 10px;
+  padding: 18px 18px 12px;
   position: relative;
 }
+
 .pv2-discard{
   border:0;
   background:transparent;
-  font-weight:800;
+  font-weight:900;
   color:#111;
   display:flex;
   align-items:center;
-  gap:8px;
-  padding:10px 12px;
-  border-radius:12px;
+  gap:10px;
+  padding:12px 14px;
+  border-radius:14px;
+  font-size:18px;
 }
-.pv2-discard:active{ transform:scale(.98); }
+
+.pv2-discard:active{ transform:scale(.99); }
+
 .pv2-title{
   text-align:center;
-  font-weight:900;
-  font-size:22px;
+  font-weight:950;
+  font-size:24px;
   color:#111;
-  margin-top:-42px; /* pulls title up like screenshot */
+  margin-top:-52px;
 }
 
 /* hero area */
 .pv2-hero{
   background:#ffe600;
-  padding: 10px 0 14px;
+  padding: 10px 0 18px;
   display:flex;
   justify-content:center;
 }
+
 .pv2-imgcard{
-  width: 170px;
-  height: 170px;
-  background:#fff7d6;
-  border-radius: 10px;
+  width: 500px;
+  height: 500px;
+  background:#fff7d600;
+  border-radius: 14px;
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow: 0 8px 18px rgba(0,0,0,.10);
+  
 }
+
 .pv2-img{
-  width: 140px;
-  height: 140px;
+  width: 450px;
+  height: 450px;
   object-fit: contain;
 }
 
@@ -60,52 +67,60 @@
 .pv2-body{
   flex:1;
   overflow:auto;
-  padding: 12px 14px 120px; /* space for bottom bar */
+  padding: 18px 18px 150px; /* space for bottom bar */
 }
 
 /* group header */
 .pv2-group{
-  margin-bottom: 18px;
+  margin-bottom: 22px;
 }
+
 .pv2-grouphead{
   display:flex;
   align-items:center;
-  gap:10px;
-  margin: 8px 0 10px;
+  gap:21px;
+  margin: 10px 0 12px;
 }
+
 .pv2-groupname{
-  font-weight:900;
+  font-weight:950;
   color:#111;
+  font-size:18px;
 }
+
 .pv2-required{
-  font-size: 11px;
-  font-weight:900;
-  padding: 3px 8px;
-  border-radius: 999px;
+  font-size: 12px;
+  font-weight:700;
+  padding: 6px 10px;
+  border-radius: 300px;
   background:#ef4444;
   color:#fff;
 }
 
-/* options grid like screenshot */
+/* options grid */
 .pv2-grid{
   display:grid;
-  grid-template-columns: repeat(3, minmax(0,1fr));
-  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0,1fr)); /* kiosk fixed */
+  gap: 18px;
 }
+
 .pv2-opt{
   position: relative;
   border:0;
   background:#fff;
-  border-radius: 10px;
-  min-height: 54px;
-  padding: 14px 10px;
-  box-shadow: 0 6px 14px rgba(0,0,0,.08);
-  font-weight:900;
+  border-radius: 14px;
+  min-height: 76px;
+  padding: 18px 14px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.08);
+  font-weight:700;
   color:#111;
+  font-size:21px;
 }
+
 .pv2-opt:active{ transform:scale(.99); }
+
 .pv2-opt.active{
-  outline: 3px solid #ffe600;
+  outline: 4px solid #ffe600;
 }
 
 /* name + extra tag */
@@ -113,44 +128,48 @@
   display:block;
   text-align:center;
 }
+
 .pv2-extra{
   position:absolute;
-  top:6px;
-  right:8px;
+  top:8px;
+  right:10px;
   background:#ffe600;
   color:#111;
-  font-size:10px;
-  font-weight:950;
-  padding: 2px 6px;
-  border-radius: 6px;
+  font-size:15px;
+  font-weight:700;
+  padding: 4px 8px;
+  border-radius: 8px;
 }
 
-/* floating qty (bottom right above bar) */
+/* floating qty */
 .pv2-qty{
   position: fixed;
-  right: 16px;
-  bottom: 86px; /* sits above bottom bar */
+  right: 18px;
+  bottom: 130px; /* above bottom bar */
   background:#fff;
-  border-radius: 8px;
+  border-radius: 14px;
   display:flex;
   overflow:hidden;
-  box-shadow: 0 10px 22px rgba(0,0,0,.10);
+  box-shadow: 0 12px 26px rgba(0,0,0,.12);
 }
+
 .pv2-qtybtn{
-  width: 44px;
-  height: 34px;
+  width: 64px;
+  height: 54px;
   border:0;
   background:#fff;
   font-weight:950;
-  font-size:18px;
+  font-size:24px;
 }
+
 .pv2-qtynum{
-  width: 44px;
-  height: 34px;
+  width: 64px;
+  height: 54px;
   display:flex;
   align-items:center;
   justify-content:center;
   font-weight:950;
+  font-size:20px;
   border-left:1px solid rgba(0,0,0,.08);
   border-right:1px solid rgba(0,0,0,.08);
 }
@@ -161,38 +180,45 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 76px;
+  height: 110px;
   background:#fff;
   border-top: 1px solid rgba(0,0,0,.08);
   display:flex;
   align-items:center;
   justify-content:flex-end;
-  gap: 14px;
-  padding: 12px 14px;
+  gap: 16px;
+  padding: 16px 18px;
 }
+
 .pv2-totalbox{
   margin-right:auto;
   text-align:center;
-  width: 140px;
+  width: 220px;
 }
+
 .pv2-total-label{
-  font-size: 11px;
+  font-size: 12px;
   color:#6b7280;
-  font-weight:800;
+  font-weight:900;
 }
+
 .pv2-total{
-  font-size: 18px;
+  font-size: 22px;
   font-weight:950;
   color:#111;
+  margin-top:4px;
 }
 
 .pv2-add{
   border:0;
   background:#ffe600;
   color:#111;
-  font-weight:950;
-  border-radius: 10px;
-  padding: 14px 18px;
-  min-width: 140px;
+  font-weight:700;
+  border-radius: 14px;
+  height: 64px;
+  padding: 0 22px;
+  min-width: 260px;
+  font-size:18px;
 }
+
 .pv2-add:active{ transform:scale(.99); }

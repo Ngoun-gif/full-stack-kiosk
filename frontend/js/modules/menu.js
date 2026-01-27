@@ -117,8 +117,9 @@ Kiosk.modules.menu = {
     },
 
     goCheckout() {
-      this.router.go("checkout");
+      this.router.go("cart");
     },
+
 
     async initMenu() {
       this.store.loading = true;
